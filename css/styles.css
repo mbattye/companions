@@ -1,11 +1,12 @@
 /* Companions — styles. Tokens first; light theme on :root, dark via media query and [data-theme]. */
 /* Palette: Greek pigments and pottery. White #F7F4EC, black #1C1714, pottery black gloss #141210,
    red ochre #9E2F22, yellow ochre #D2B45A, cinnabar #E34234, Tyrian purple #66023C,
-   Tyrian red-purple #990024, pottery orange-red #C45D2B. Other values are mixes of these,
+   Tyrian red-purple #990024, pottery orange-red #C45D2B. The page background is the white itself;
+   --ground-2 is that white with 4% black (same hue), never tinted. Other values are mixes of these,
    deepened or lightened only where text needs WCAG AA contrast.
    --aegean is the interaction colour (focus, hover); --bronze the accent (labels, numerals). */
 :root{
-  --ground:#F7F4EC; --ground-2:#F3EEDD; --ink:#1C1714; --ink-2:#3F3A37; --stone:#6D6964;
+  --ground:#F7F4EC; --ground-2:#EEEBE3; --ink:#1C1714; --ink-2:#3F3A37; --stone:#6D6964;
   --rule:#CDCAC3; --rule-2:#E1DED6; --aegean:#66023C; --bronze:#9E2F22;
   --cinnabar:#E34234; --ochre:#D2B45A;
   --q-org:#66023C; --q-the:#7B6938; --q-pra:#990024; --q-poi:#A65027;
