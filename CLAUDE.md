@@ -22,7 +22,7 @@ After any data edit, run `node scripts/check-data.js`.
 
 ## Hosting and web app
 
-- GitHub: `mbattye/companions` (private). Cloudflare Pages builds `main` with `sh scripts/build.sh` into `dist/`; every push deploys. The script only copies public files, so add any new top-level site file to its `FILES` list.
+- Live at https://companions.mbattye.workers.dev (a Cloudflare Worker serving static assets). GitHub: `mbattye/companions` (private). Every push to `main` deploys: Workers Builds runs `sh scripts/build.sh` (dashboard Build command), then `npx wrangler deploy`, and `wrangler.jsonc` serves `dist/` only. The script copies public files only, so add any new top-level site file to its `FILES` list.
 - It installs as a web app (Safari → Share → Add to Home Screen). `manifest.webmanifest` and `assets/icons/` define the icon; `sw.js` caches the site for offline use (network first, cache as fallback).
 - **Bump `VERSION` in `sw.js` whenever you add, rename or remove a file in its `PRECACHE` list.** Content edits need no bump.
 - Icons are generated from `assets/icons/icon.svg` (`qlmanage -t -s <size>` renders it on macOS).

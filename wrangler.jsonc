@@ -1,0 +1,10 @@
+// Cloudflare Workers config. Serves only dist/, which scripts/build.sh creates
+// (set as the Build command in the Cloudflare dashboard; Workers Builds ignores
+// build settings in this file). Repo notes such as CLAUDE.md stay off the web.
+{
+  "name": "companions",
+  "compatibility_date": "2026-09-22",
+  "assets": {
+    "directory": "./dist"
+  }
+}

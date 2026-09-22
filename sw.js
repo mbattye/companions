@@ -3,12 +3,12 @@
  * Site files: network first, so an online visit always gets the latest version; the cache is the offline fallback.
  * Google Fonts: the stylesheet is served from cache and refreshed in the background; font files are cached once.
  * Bump VERSION when files are added to or removed from PRECACHE.
+ * The host redirects /index.html to /, so the page is cached as "./" only (a cached redirect cannot answer a navigation).
  */
-const VERSION = "companions-v1";
+const VERSION = "companions-v2";
 const FONTS = "companions-fonts";
 const PRECACHE = [
   "./",
-  "index.html",
   "css/styles.css",
   "js/app.js",
   "js/data/domains.js",
@@ -44,11 +44,11 @@ self.addEventListener("fetch", e => {
     e.respondWith(
       fetch(req)
         .then(res => {
-          if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); }
+          if (res.ok && !res.redirected) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); }
           return res;
         })
         .catch(() => caches.match(req, { ignoreSearch: true })
-          .then(hit => hit || (req.mode === "navigate" ? caches.match("index.html") : null))
+          .then(hit => hit || (req.mode === "navigate" ? caches.match("./") : null))
           .then(hit => hit || Response.error()))
     );
     return;

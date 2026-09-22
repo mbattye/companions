@@ -1,6 +1,7 @@
 #!/bin/sh
 # build.sh
-# Copies the public site into dist/ for hosting (Cloudflare Pages runs this).
+# Copies the public site into dist/ for hosting. Cloudflare Workers Builds runs this
+# (dashboard Build command); wrangler.jsonc then serves dist/ only.
 # There is no compile step: this only keeps repo files (CLAUDE.md, ROADMAP.md,
 # SOURCES.md, scripts/) off the web. Add any new top-level site file to FILES.
 set -e
