@@ -228,14 +228,15 @@ C.stages = [
     "aim": "Ask why: the four causes, the deep structure, and history as argument.",
     "domains": [
       "phil",
+      "logic",
       "hist",
+      "rel",
       "phys",
       "math",
       "lett",
-      "comp",
-      "rel"
+      "comp"
     ],
-    "what": "Metaphysics, epistemology, mind and philosophy of science. History analysed: causes of wars, rise and fall of states. Advanced mathematics and physics. Tragedy and the novel. AI and the question of mind.",
+    "what": "Metaphysics, epistemology, mind and philosophy of science. History analysed: causes of wars, rise and fall of states. Advanced logic, mathematics and physics. Tragedy and the novel. AI and the question of mind.",
     "how": "The Lyceum rhythm: morning lecture, afternoon walk, evening seminar. Primary texts, not summaries. Formal disputation.",
     "ai": "A sparring partner that takes the opposing side at full strength, and a research assistant that must cite every claim.",
     "proof": "A thesis defended in public disputation before companions and outsiders.",
@@ -324,11 +325,14 @@ C.stages = [
     "aim": "Leisure in the Greek sense: free, serious study for its own sake, and teaching others.",
     "domains": [
       "phil",
+      "eth",
+      "pol",
+      "lang",
       "lett",
-      "mus",
-      "art",
       "hist",
-      "rel"
+      "rel",
+      "mus",
+      "art"
     ],
     "what": "Return to any domain at greater depth. Mastery in one, fluency in many. The great conversation, joined as a participant.",
     "how": "Teach a younger cohort. Host the symposium. Write, travel, build and keep the notebook.",
