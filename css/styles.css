@@ -1,8 +1,14 @@
 /* Companions — styles. Tokens first; light theme on :root, dark via media query and [data-theme]. */
+/* Palette: Greek pigments and pottery. White #F7F4EC, black #1C1714, pottery black gloss #141210,
+   red ochre #9E2F22, yellow ochre #D2B45A, cinnabar #E34234, Tyrian purple #66023C,
+   Tyrian red-purple #990024, pottery orange-red #C45D2B. Other values are mixes of these,
+   deepened or lightened only where text needs WCAG AA contrast.
+   --aegean is the interaction colour (focus, hover); --bronze the accent (labels, numerals). */
 :root{
-  --ground:#F3F2EE; --ground-2:#E9E7E0; --ink:#1B1D1F; --ink-2:#3B3D3F; --stone:#6A675F;
-  --rule:#CDC9BF; --rule-2:#DFDCD3; --aegean:#2D4B6C; --bronze:#8A6A33;
-  --q-org:#2D4B6C; --q-the:#56663A; --q-pra:#8A6A33; --q-poi:#7B3A3A;
+  --ground:#F7F4EC; --ground-2:#F3EEDD; --ink:#1C1714; --ink-2:#3F3A37; --stone:#6D6964;
+  --rule:#CDCAC3; --rule-2:#E1DED6; --aegean:#66023C; --bronze:#9E2F22;
+  --cinnabar:#E34234; --ochre:#D2B45A;
+  --q-org:#66023C; --q-the:#7B6938; --q-pra:#990024; --q-poi:#A65027;
   --f-display:"Cormorant Garamond","Cormorant",Garamond,"Times New Roman",serif;
   --f-caps:"Marcellus SC","Marcellus",Georgia,serif;
   --f-text:"Spectral",Georgia,"Times New Roman",serif;
@@ -11,15 +17,17 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ground:#121416; --ground-2:#1B1E21; --ink:#E8E5DC; --ink-2:#CDC9BF; --stone:#9C988D;
-    --rule:#373A3D; --rule-2:#26292C; --aegean:#95B0CE; --bronze:#C6A566;
-    --q-org:#95B0CE; --q-the:#A9B889; --q-pra:#C6A566; --q-poi:#D0918A;
+    --ground:#141210; --ground-2:#1C1714; --ink:#F7F4EC; --ink-2:#D0CEC7; --stone:#989590;
+    --rule:#383633; --rule-2:#262422; --aegean:#E34234; --bronze:#D2B45A;
+    --cinnabar:#E34234; --ochre:#D2B45A;
+    --q-org:#AF7B94; --q-the:#D2B45A; --q-pra:#C26B7C; --q-poi:#CD784E;
   }
 }
 :root[data-theme="dark"]{
-  --ground:#121416; --ground-2:#1B1E21; --ink:#E8E5DC; --ink-2:#CDC9BF; --stone:#9C988D;
-  --rule:#373A3D; --rule-2:#26292C; --aegean:#95B0CE; --bronze:#C6A566;
-  --q-org:#95B0CE; --q-the:#A9B889; --q-pra:#C6A566; --q-poi:#D0918A;
+  --ground:#141210; --ground-2:#1C1714; --ink:#F7F4EC; --ink-2:#D0CEC7; --stone:#989590;
+  --rule:#383633; --rule-2:#262422; --aegean:#E34234; --bronze:#D2B45A;
+  --cinnabar:#E34234; --ochre:#D2B45A;
+  --q-org:#AF7B94; --q-the:#D2B45A; --q-pra:#C26B7C; --q-poi:#CD784E;
 }
 *{box-sizing:border-box}
 body{background:var(--ground);color:var(--ink);font-family:var(--f-text);font-size:17px;line-height:1.62;font-weight:400;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -47,9 +55,9 @@ a{color:inherit}
 @media (max-width:560px){.brand i{display:none}.brand b{font-size:.8rem;letter-spacing:.2em}.nav nav a{font-size:.66rem;letter-spacing:.14em}}
 
 /* ---------- Ornament ---------- */
-.meander{display:block;width:100%;height:14px;color:var(--bronze)}
+.meander{display:block;width:100%;height:14px;color:var(--ochre)}
 .meander.short{width:112px}
-.ornament{display:flex;align-items:center;gap:14px;color:var(--bronze)}
+.ornament{display:flex;align-items:center;gap:14px;color:var(--ochre)}
 .ornament::before,.ornament::after{content:"";height:1px;background:var(--rule);flex:1}
 .ornament span{font-family:var(--f-greek);font-size:.9rem;letter-spacing:.3em}
 
@@ -83,7 +91,7 @@ section.first{border-top:0}
 .epigraph-en{font-family:var(--f-display);font-style:italic;font-size:1.15rem;color:var(--stone);margin-top:4px}
 .epigraph-en span{font-style:normal}
 .hero h1{font-size:clamp(2.6rem,7.4vw,5.6rem);font-weight:500;margin:34px auto 0;max-width:15ch;line-height:1.02}
-.hero h1 em{display:block;font-style:italic;font-weight:400;color:var(--bronze)}
+.hero h1 em{display:block;font-style:italic;font-weight:400;color:var(--cinnabar)}
 .hero .lede{margin:28px auto 0;text-align:center}
 .cta{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:36px}
 .btn{font-family:var(--f-caps);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:13px 22px;border:1px solid var(--ink);color:var(--ink);background:transparent;transition:background .2s,color .2s;cursor:pointer}
@@ -219,7 +227,7 @@ footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;m
 .spectrum .nm small{display:block;color:var(--stone);font-size:.76rem}
 .spectrum .track{position:relative;height:1px;background:var(--rule)}
 .spectrum .dot{position:absolute;top:50%;width:11px;height:11px;border:1px solid var(--ink);background:var(--ground);transform:translate(-50%,-50%) rotate(45deg)}
-.spectrum .row.ours .dot{background:var(--bronze);border-color:var(--bronze)}
+.spectrum .row.ours .dot{background:var(--cinnabar);border-color:var(--cinnabar)}
 .spectrum .row.ours .nm{font-weight:500}
 .spectrum .ends{display:flex;justify-content:space-between;font-family:var(--f-caps);letter-spacing:.14em;font-size:.66rem;color:var(--stone);text-transform:uppercase;padding-top:10px;grid-column:2}
 .spectrum .endrow{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr);gap:18px}
@@ -331,7 +339,7 @@ footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;m
 
 .closing{text-align:center;padding-block:clamp(64px,9vw,120px)}
 .closing .big{font-family:var(--f-display);font-size:clamp(2rem,4.6vw,3.4rem);line-height:1.1;max-width:22ch;margin:0 auto}
-.closing .big em{color:var(--bronze)}
+.closing .big em{color:var(--cinnabar)}
 .reading{display:grid;gap:14px;border-top:1px solid var(--rule-2);padding-top:14px}
 .reading>dt{color:var(--stone)}
 .tier{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:10px}

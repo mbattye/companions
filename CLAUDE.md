@@ -66,7 +66,7 @@ Data files are plain scripts that attach to `window.C` (not ES modules) so the s
 Minimal, classical, precise. Beauty through proportion, type and restraint; small Greek touches only (meander band, column mark, Greek numerals, polytonic labels). No gradients, shadows, emoji, rounded cards or loud colour.
 
 - Type: Cormorant Garamond (display), Spectral (text), Marcellus SC (small caps labels), GFS Didot (Greek).
-- Tokens in `:root`: `--ground --ground-2 --ink --ink-2 --stone --rule --rule-2 --aegean --bronze` plus branch colours `--q-org --q-the --q-pra --q-poi`. Dark theme redefines the same tokens under `prefers-color-scheme` and `[data-theme="dark"]`. Never hard-code a colour outside the token blocks.
+- Tokens in `:root`: `--ground --ground-2 --ink --ink-2 --stone --rule --rule-2 --aegean --bronze --cinnabar --ochre` plus branch colours `--q-org --q-the --q-pra --q-poi`. Palette: Greek pigments and pottery (see the comment above the tokens); `--aegean` is the interaction colour, `--bronze` the accent, `--cinnabar` display emphasis, `--ochre` decoration only (too light for text on white). Dark theme redefines the same tokens under `prefers-color-scheme` and `[data-theme="dark"]`. Never hard-code a colour outside the token blocks.
 - Hairline rules (1px), generous whitespace, left-aligned except the home hero.
 - Must work at 360px wide (16px gutters, no horizontal scroll), on iPad in both orientations, and on desktop. Respect `prefers-reduced-motion`. Visible keyboard focus everywhere.
 
