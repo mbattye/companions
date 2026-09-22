@@ -4,7 +4,7 @@ A small, static website (to become an installable iPhone/iPad app) that sets out
 
 - **Home**: a call to arms championing learning and the Greek-derived tradition.
 - **World View**: an interactive mind map of 17 domains in Aristotle's four branches (Organon/instruments, Theoria/knowing, Praxis/acting, Poiesis/making). Domain → sub-areas → cross-links, reading lists and off-ramps.
-- **Curriculum**: how the Companions learnt at Mieza, the later inheritances (Lyceum, Renaissance bottega, Lunar Society, Apple, SpaceX, AI), methods, criticism, seven stages (Α–Ζ), spiral table, time, AI rules, library.
+- **Curriculum**: how the Companions learnt at Mieza, the later inheritances (Lyceum, Mouseion, Bede’s monastery, House of Wisdom, the university, bottega, Lincei, Royal Society, Lunar Society, Bohr’s institute, Xerox PARC, SpaceX, AI), methods, criticism, seven stages (Α–Ζ), spiral table, time, AI rules, library.
 
 Owner: Mike. Read `ROADMAP.md` for current workstreams.
 

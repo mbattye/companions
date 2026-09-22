@@ -12,7 +12,7 @@ C.mixCategories = [
   },
   {
     "k": "make",
-    "n": "Making & real tasks",
+    "n": "Workshop & real tasks",
     "c": "var(--q-poi)"
   },
   {
@@ -394,12 +394,19 @@ C.spiral = {
 /* [name, context, position 0 (rigid) to 100 (open), isOurs] */
 C.spectrum = [
   ["Spartan agoge","Sparta, from c. 7th c. BC",6],
+  ["Bede’s monastery","Wearmouth–Jarrow, c. 680",18],
   ["Macedonian royal pages","Philip’s court",24],
+  ["The university","Paris and Oxford, c. 1200",30],
   ["Verrocchio’s bottega","Florence, c. 1470",34],
-  ["Apple","2000s",40],
-  ["Mieza","343 BC",50],
+  ["The House of Wisdom","Baghdad, c. 830",44],
+  ["Mieza","Macedonia, 343 BC",50],
   ["Companions","This curriculum",52,true],
-  ["SpaceX","2010s–20s",56],
-  ["The Lyceum","335 BC",62],
-  ["The Lunar Society","c. 1765",86]
+  ["SpaceX","Hawthorne, 2010s–20s",56],
+  ["The Mouseion","Alexandria, c. 280 BC",58],
+  ["The Lyceum","Athens, 335 BC",62],
+  ["The Lincei","Rome, 1603",66],
+  ["The Royal Society","London, 1660",72],
+  ["Bohr’s institute","Copenhagen, 1921",80],
+  ["Xerox PARC","Palo Alto, 1970",82],
+  ["The Lunar Society","Birmingham, c. 1765",86]
 ];
