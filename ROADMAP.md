@@ -2,16 +2,18 @@
 
 ## 1. Correctness pass: style, formatting, grammar, content
 
-- [ ] **Fact-check every historical and textual claim** and add a source note for each (a `SOURCES.md` or inline comments). Priority list:
+- [x] **Fact-check every historical and textual claim** and add a source note for each. Done in `SOURCES.md` (September 2026); three items marked **?** await a decision. Priority list:
   - Mieza: dates (c. 343–340 BC), Aristotle's age (~41), Alexander 13, stone seats and shady walks (Plutarch, *Alexander* 7), the casket *Iliad* and dagger (*Alexander* 8, 26), "life … the good life" (*Alexander* 8), medicine (*Alexander* 8).
   - Aristotle: *Metaphysics* I.1 980a21 and I.2 982b12; *Physics* I.1 (knowable to us / by nature); *NE* I.3 and VI.8 (the young and practical wisdom); *NE* I.6 (truth above friends); *Politics* VII.17 (no lessons before five); *Politics* VIII.3 (four branches); *Metaphysics* VI.1 (theology).
   - Lyceum lecture pattern (Aulus Gellius), 158 constitutions, *peripatos* etymology.
   - Verrocchio/Leonardo dates; Lunar Society (founding c. 1765, full-moon Mondays, members); Falcon 1 fourth flight (28 Sept 2008); Bloom's 2 sigma (1984); Seneca *Ep.* 7.8.
-- [ ] **Verify every reading-list entry**: exact title, author, recommended translation; remove anything doubtful.
-- [ ] Proofread all copy for British spelling, punctuation, curly quotes, consistent capitalisation and tense.
-- [ ] Check all polytonic Greek (accents, breathings, iota subscripts).
+- [ ] **Verify every reading-list entry**: exact title, author, recommended translation; remove anything doubtful. Titles and authors checked (all real, correctly attributed); recommended translations for the classics still to choose.
+- [x] Proofread all copy for British spelling, punctuation, curly quotes, consistent capitalisation and tense.
+- [x] Check all polytonic Greek (accents, breathings, iota subscripts). All correct; all-caps ΕΤΑΙΡΟΙ now drops its breathing.
 - [ ] Review the domain and sub-area taxonomy for gaps and overlaps (the Religion omission shows why this matters). Candidates to consider: geography/cartography, psychology as its own home, agriculture/food, law vs. politics split, media/journalism.
 - [ ] Accessibility: contrast in both themes (WCAG AA), keyboard traversal of the map, screen-reader labels, focus order.
+
+Run `node scripts/check-data.js` after any data edit: it checks ids, links, spiral and reading keys, mixes, off-ramp limits, markup and straight quotes.
 
 ## 2. Distribution: web first, then iPhone and iPad
 
