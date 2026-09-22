@@ -1,4 +1,4 @@
-/* Companions — styles. Tokens first; light theme on :root, dark via media query and [data-theme]. */
+/* Companions styles. Tokens first; light theme on :root, dark via media query and [data-theme]. */
 :root{
   --ground:#F3F2EE; --ground-2:#E9E7E0; --ink:#1B1D1F; --ink-2:#3B3D3F; --stone:#6A675F;
   --rule:#CDC9BF; --rule-2:#DFDCD3; --aegean:#2D4B6C; --bronze:#8A6A33;
@@ -340,7 +340,7 @@ footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;m
 .tier li,.stage-read li{font-size:.93rem;line-height:1.4}
 cite{font-style:italic;font-family:var(--f-display);font-size:1.12em;color:var(--ink)}
 .au{color:var(--ink-2)}
-.au::before{content:"— ";color:var(--stone)}
+.au::before{content:"· ";color:var(--stone)}
 .tier small{display:block;color:var(--stone);font-size:.8rem}
 .stage-read{grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px 24px}
 .library{display:grid;border-top:1px solid var(--ink)}

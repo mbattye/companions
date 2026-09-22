@@ -56,8 +56,8 @@ Data files are plain scripts that attach to `window.C` (not ES modules) so the s
 
 ## Content and voice
 
-- British English (colour, organisation, learnt, practise as verb). Curly quotes and apostrophes (’ “ ”), en/em dashes as used.
-- Short sentences, active voice, confident but honest. Mark conjecture as conjecture; no invented quotations. Every classical citation must be checkable (work + book/section).
+- British English (colour, organisation, learnt, practise as verb). Curly quotes and apostrophes (’ “ ”). En dashes for ranges (343–340 BC); no em dashes.
+- Short sentences, active voice, confident but honest. No marketing register: headings state rather than ask, no superlatives (“the most … ever built”), no “not just X, it’s Y”. Antithesis (“a tutor, not a substitute”) is part of the voice, so keep it for claims that matter and cut it elsewhere. Mark conjecture as conjecture; no invented quotations. Every classical citation must be checkable (work + book/section).
 - Greek is polytonic and set in `.gr` (GFS Didot). Check accents and breathings when editing.
 - Our own prescriptions (stage ages, time mixes, spiral depths, spectrum positions) are labelled as our reading, not history.
 
