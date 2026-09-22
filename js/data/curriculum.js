@@ -48,7 +48,7 @@ C.stages = [
       "body"
     ],
     "what": "Big History as one story, Big Bang to today. Myths and Homer read aloud. Nature walks and collecting: plants, rocks, birds. Drawing from life. Singing and a first instrument. Counting games and puzzles. Building with wood and clay.",
-    "how": "Questions before answers. A “why” notebook. Show-and-tell, play and free exploration. Aristotle: no lessons before five, then gently.",
+    "how": "Questions before answers. A “why” notebook. Show-and-tell, play and free exploration. Aristotle: no lessons before five, then two years of watching before doing.",
     "ai": "An oracle that answers back with a question. It pitches answers to the child’s level and never makes the drawing or tells the story for them.",
     "proof": "A cabinet of curiosities: a hundred specimens collected, drawn, named and explained.",
     "mix": {
@@ -64,7 +64,8 @@ C.stages = [
         "author": "Rosemary Sutcliff"
       },
       {
-        "title": "D’Aulaires’ Book of Greek Myths"
+        "title": "D’Aulaires’ Book of Greek Myths",
+        "author": "Ingri & Edgar Parin d’Aulaire"
       },
       {
         "title": "Aesop’s Fables"

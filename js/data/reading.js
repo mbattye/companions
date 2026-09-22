@@ -34,7 +34,7 @@ C.reading = {
       "tier": "Classic",
       "title": "Discourse on the Method",
       "author": "René Descartes",
-      "note": "Rules for directing the mind"
+      "note": "Four rules of method (Part II)"
     },
     {
       "tier": "Deeper",

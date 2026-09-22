@@ -192,7 +192,7 @@ function renderPanel(){
   if(!st.focus){
     const nLinks=LINKDATA.length,nSubs=Object.keys(SUB).length;
     h=`<span class="gr big">Κόσμος</span><h2>The knowable world</h2>
-    <p>${D.length} domains, ${nSubs} parts and ${nLinks} cross-connections. The ring runs clockwise from the top through Aristotle’s four branches. Instruments come first because every other branch depends on them. The lines inside show how strongly two domains are linked. Hover to trace them, or select a domain to open it.</p>
+    <p>${D.length} domains, ${nSubs} parts and ${nLinks} cross-connections. The ring runs clockwise from the top through the four branches. Instruments come first because every other branch depends on them. The lines inside show how strongly two domains are linked. Hover to trace them, or select a domain to open it.</p>
     <dl>${Object.values(Q).map(q=>`<div><dt style="color:${q.c}">${q.gr} · ${q.en}</dt><dd>${D.filter(d=>Q[d.branch]===q).map(d=>`<button class="back" style="text-transform:none;letter-spacing:0;font-family:var(--f-text);font-size:.95rem;color:var(--ink-2);border-bottom:1px dotted var(--rule);margin-right:10px" data-open="${d.id}">${esc(d.name)}</button>`).join(" ")}</dd></div>`).join("")}</dl>`;
   } else if(!st.sel){
     const d=DM[st.focus];

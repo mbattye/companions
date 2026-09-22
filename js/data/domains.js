@@ -39,7 +39,7 @@ C.domains = [
     "short": "Logic",
     "greek": "Ἀναλυτικά",
     "desc": "The rules of valid thought: how to move from what you know to what follows, and how to see where an argument breaks.",
-    "aristotle": "Prior & Posterior Analytics, Topics, Sophistical Refutations: the Organon",
+    "aristotle": "The Organon: Categories, On Interpretation, Prior & Posterior Analytics, Topics, Sophistical Refutations",
     "frontier": "Formal verification, causal inference, argument mapping",
     "subs": [
       {
@@ -741,7 +741,7 @@ C.domains = [
       {
         "id": "friend",
         "name": "Friendship",
-        "desc": "Aristotle devotes two books of the Ethics to friendship.",
+        "desc": "Aristotle gives two books of the <em>Nicomachean Ethics</em> to friendship.",
         "topics": [
           "Friendships of utility, pleasure & virtue",
           "Loyalty",
@@ -924,7 +924,7 @@ C.domains = [
     "name": "Body & Play",
     "short": "Body & Play",
     "greek": "Γυμναστική",
-    "desc": "The gymnasium stood beside the academy. Strength, skill, competition and play are part of the curriculum.",
+    "desc": "Plato’s Academy and Aristotle’s Lyceum were both gymnasia. Strength, skill, competition and play are part of the curriculum.",
     "aristotle": "Politics VIII on gymnastics; Ethics on pleasure and play",
     "frontier": "Sports science, sleep research, play research",
     "subs": [
@@ -942,7 +942,7 @@ C.domains = [
       {
         "id": "sport",
         "name": "Sport & competition",
-        "desc": "<em>Aretē</em> was first an athlete’s word.",
+        "desc": "In Homer, <em>aretē</em> is excellence of any kind, even a racehorse’s.",
         "topics": [
           "The ancient Olympics",
           "Team sports",
@@ -1065,7 +1065,7 @@ C.domains = [
       {
         "id": "harm",
         "name": "Harmony & theory",
-        "desc": "Pythagoras heard number in the octave.",
+        "desc": "The Pythagoreans heard number in the octave.",
         "topics": [
           "Pythagorean ratios",
           "Scales & modes",
@@ -1297,7 +1297,7 @@ C.links = [
   {
     "a": "harm",
     "b": "arith",
-    "why": "Pythagoras found consonance in whole-number ratios."
+    "why": "The Pythagoreans found consonance in whole-number ratios."
   },
   {
     "a": "acoust",
@@ -1562,7 +1562,7 @@ C.links = [
   {
     "a": "org",
     "b": "friend",
-    "why": "Teams run on trust, Aristotle’s friendship of shared purpose."
+    "why": "Teams run on trust. Aristotle held that every partnership involves a kind of friendship."
   },
   {
     "a": "org",
@@ -1582,7 +1582,7 @@ C.links = [
   {
     "a": "sport",
     "b": "virtue",
-    "why": "<em>Aretē</em>: excellence, first on the track."
+    "why": "<em>Aretē</em>: one word for excellence, on the track and in character."
   },
   {
     "a": "poetry",
