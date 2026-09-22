@@ -17,8 +17,8 @@ Run `node scripts/check-data.js` after any data edit: it checks ids, links, spir
 
 ## 2. Distribution: web first, then iPhone and iPad
 
-1. **Host the site.** GitHub repo → GitHub Pages, Cloudflare Pages or Vercel. Add a domain.
-2. **Make it a PWA** (the cheapest path to "an app"): `manifest.webmanifest`, icons (including Apple touch icons), theme colours, a service worker for offline use, safe-area handling. It installs to the iPhone/iPad home screen via Share → Add to Home Screen.
+1. **Host the site.** Done: private GitHub repo `mbattye/companions` → Cloudflare Pages (`sh scripts/build.sh`, output `dist`). Still to do: add a domain.
+2. **Make it a PWA** (the cheapest path to "an app"). Done: `manifest.webmanifest`, icons (including the Apple touch icon), theme colours, a service worker for offline use (`sw.js`), safe-area handling. It installs to the iPhone/iPad home screen via Share → Add to Home Screen.
 3. **Tune for iPad and iPhone.** Test 390/430 (phones), 820/1024/1180/1366 (iPads, both orientations). Replace hover-only affordances with tap equivalents; larger hit targets on the map; consider a split view on iPad landscape.
 4. **App Store (optional, later).** Wrap with Capacitor (keeps this codebase) and build in Xcode; needs an Apple Developer account. Apple rejects apps that are "just a website", so add app-grade value first: offline, progress tracking, a notebook, notifications for the weekly rhythm. Go native in SwiftUI only if a native experience becomes the point.
 

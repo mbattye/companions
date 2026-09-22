@@ -298,4 +298,6 @@ $("#library").innerHTML=D.map(d=>`<details class="shelf" style="--c:${qc(d)}"><s
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(curPage==="world-view")renderMap();},60);}).observe(wrap);
 route();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(curPage==="world-view")renderMap();});
+/* Offline support once installed; not available (or needed) when opened from file:// */
+if("serviceWorker" in navigator&&location.protocol!=="file:")navigator.serviceWorker.register("sw.js");
 })();

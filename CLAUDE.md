@@ -3,7 +3,7 @@
 A small, static website (to become an installable iPhone/iPad app) that sets out an Aristotelian curriculum for the modern student with an AI tutor.
 
 - **Home**: a call to arms championing learning and the Greek-derived tradition.
-- **World View**: an interactive mind map of 17 domains in Aristotle's four branches (Organon/instruments, Theoria/knowing, Praxis/acting, Poiesis/making). Domain → sub-areas → cross-links, reading lists and off-ramps.
+- **World View**: an interactive mind map of 17 domains in four branches drawn from Aristotle (Organon/instruments, Theoria/knowing, Praxis/acting, Poiesis/making). Domain → sub-areas → cross-links, reading lists and off-ramps.
 - **Curriculum**: how the Companions learnt at Mieza, the later inheritances (Lyceum, Mouseion, Bede’s monastery, House of Wisdom, the university, bottega, Lincei, Royal Society, Lunar Society, Bohr’s institute, Xerox PARC, SpaceX, AI), methods, criticism, seven stages (Α–Ζ), spiral table, time, AI rules, library.
 
 Owner: Mike. Read `ROADMAP.md` for current workstreams.
@@ -18,6 +18,15 @@ python3 -m http.server 8000   # then open http://localhost:8000
 
 Routes are hash-based: `#/`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`.
 
+After any data edit, run `node scripts/check-data.js`.
+
+## Hosting and web app
+
+- GitHub: `mbattye/companions` (private). Cloudflare Pages builds `main` with `sh scripts/build.sh` into `dist/`; every push deploys. The script only copies public files, so add any new top-level site file to its `FILES` list.
+- It installs as a web app (Safari → Share → Add to Home Screen). `manifest.webmanifest` and `assets/icons/` define the icon; `sw.js` caches the site for offline use (network first, cache as fallback).
+- **Bump `VERSION` in `sw.js` whenever you add, rename or remove a file in its `PRECACHE` list.** Content edits need no bump.
+- Icons are generated from `assets/icons/icon.svg` (`qlmanage -t -s <size>` renders it on macOS).
+
 ## Structure
 
 ```
@@ -28,6 +37,12 @@ js/data/curriculum.js C.stages, C.mixCategories, C.spiral, C.spectrum
 js/data/reading.js    C.reading  (per domain, tiers Begin | Classic | Deeper)
 js/data/resources.js  C.resources (per sub-area off-ramps)
 js/app.js             router, SVG mind map, panels, curriculum renderers
+manifest.webmanifest  web app name, colours, icons
+sw.js                 service worker (offline cache)
+assets/icons/         icon.svg (master), PNG sizes, favicon.svg
+scripts/check-data.js data validator
+scripts/build.sh      copies the public site into dist/ for hosting
+SOURCES.md            source note for every historical and textual claim
 ```
 
 Data files are plain scripts that attach to `window.C` (not ES modules) so the site works from `file://`. Keep it that way unless a build step is deliberately introduced.
