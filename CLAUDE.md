@@ -68,6 +68,7 @@ Minimal, classical, precise. Beauty through proportion, type and restraint; smal
 - Type: Cormorant Garamond (display), Spectral (text), Marcellus SC (small caps labels), GFS Didot (Greek).
 - Tokens in `:root`: `--ground --ground-2 --ink --ink-2 --stone --rule --rule-2 --aegean --bronze` plus branch colours `--q-org --q-the --q-pra --q-poi`. Dark theme redefines the same tokens under `prefers-color-scheme` and `[data-theme="dark"]`. Never hard-code a colour outside the token blocks.
 - Hairline rules (1px), generous whitespace, left-aligned except the home hero.
+- **Reserve palette (Greek pigments and pottery).** Not used by the site, which keeps its own tokens. Kept for future assets such as interactive learning pieces, where the pottery black and orange-red pair is the starting point: pottery black gloss `#141210`, black `#1C1714`, pottery orange-red `#C45D2B`, white `#F7F4EC`, yellow ochre `#D2B45A`, red ochre `#9E2F22`, cinnabar `#E34234`, Tyrian purple `#66023C`, Tyrian red-purple `#990024`. A full site-wide version of this palette (tokens for both themes, icons, manifest) is at the `palette-pigments` tag; it was tried and not adopted.
 - Must work at 360px wide (16px gutters, no horizontal scroll), on iPad in both orientations, and on desktop. Respect `prefers-reduced-motion`. Visible keyboard focus everywhere.
 
 ## Working agreements
