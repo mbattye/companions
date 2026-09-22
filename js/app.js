@@ -17,6 +17,7 @@ const PAIRS={};
 LINKDATA.forEach(({a,b})=>{if(!SUB[a]||!SUB[b])return;const A=SUB[a].dom,B=SUB[b].dom;if(A===B)return;const k=[A,B].sort().join("|");PAIRS[k]=(PAIRS[k]||0)+1;});
 const domLinked=id=>{const s=new Set();Object.keys(PAIRS).forEach(k=>{const[a,b]=k.split("|");if(a===id)s.add(b);if(b===id)s.add(a);});return s;};
 const qc=d=>Q[d.branch].c;
+const HOVER=matchMedia("(hover: hover)").matches;
 
 /* ---------- temple ---------- */
 (function(){
@@ -192,7 +193,7 @@ function renderPanel(){
   if(!st.focus){
     const nLinks=LINKDATA.length,nSubs=Object.keys(SUB).length;
     h=`<span class="gr big">Κόσμος</span><h2>The knowable world</h2>
-    <p>${D.length} domains, ${nSubs} parts and ${nLinks} cross-connections. The ring runs clockwise from the top through the four branches. Instruments come first because every other branch depends on them. The lines inside show how strongly two domains are linked. Hover to trace them, or select a domain to open it.</p>
+    <p>${D.length} domains, ${nSubs} parts and ${nLinks} cross-connections. The ring runs clockwise from the top through the four branches. Instruments come first because every other branch depends on them. The lines inside show how strongly two domains are linked. ${HOVER?"Hover to trace them, or select a domain to open it.":"Select a domain to open it and see its links."}</p>
     <dl>${Object.values(Q).map(q=>`<div><dt style="color:${q.c}">${q.gr} · ${q.en}</dt><dd>${D.filter(d=>Q[d.branch]===q).map(d=>`<button class="back" style="text-transform:none;letter-spacing:0;font-family:var(--f-text);font-size:.95rem;color:var(--ink-2);border-bottom:1px dotted var(--rule);margin-right:10px" data-open="${d.id}">${esc(d.name)}</button>`).join(" ")}</dd></div>`).join("")}</dl>`;
   } else if(!st.sel){
     const d=DM[st.focus];
@@ -231,7 +232,9 @@ $("#index").addEventListener("click",e=>{const b=e.target.closest("[data-open]")
 /* ---------- curriculum ---------- */
 $("#spectrum").innerHTML=SPECTRUM.map(([n,s,v,ours])=>`<div class="row${ours?" ours":""}"><div class="nm">${n}<small>${s}</small></div><div class="track"><span class="dot" style="left:${v}%"></span></div></div>`).join("")+`<div class="endrow"><span></span><div class="ends"><span>Rigid structure</span><span>Open curiosity</span></div></div>`;
 
-const mixBar=(m,labels)=>`<div class="mix" role="img" aria-label="${MIXCAT.map(k=>k.n+" "+m[k.k]+"%").join(", ")}">${MIXCAT.map(k=>`<i style="--c:${k.c};width:${m[k.k]}%">${labels&&m[k.k]>=12?m[k.k]+"%":""}</i>`).join("")}</div>`;
+const mixLabel=m=>MIXCAT.map(k=>k.n+" "+m[k.k]+"%").join(", ");
+const mixSegs=(m,labels)=>MIXCAT.map(k=>`<i data-k="${k.k}"${m[k.k]<12?` class="sm"`:""} style="--c:${k.c};width:${m[k.k]}%">${labels?`<span>${m[k.k]}%</span>`:""}</i>`).join("");
+const mixBox=m=>`<div class="mixbox"><div class="mix" aria-hidden="true">${mixSegs(m)}</div><ul class="mixlegend">${MIXCAT.map(k=>`<li data-k="${k.k}" style="--c:${k.c}">${esc(k.n)} <b>${m[k.k]}%</b></li>`).join("")}</ul></div>`;
 $("#stages").innerHTML=STAGES.map((s,i)=>`<article class="stage" id="stage-${i}">
   <div class="num">${s.numeral}<small>Stage ${i+1}<br>${s.span}</small></div>
   <div>
@@ -244,14 +247,49 @@ $("#stages").innerHTML=STAGES.map((s,i)=>`<article class="stage" id="stage-${i}"
       <div><dt>The machine’s role</dt><dd>${s.ai}</dd></div>
       <div class="proof"><dt>Proof of work</dt><dd>${s.proof}</dd></div>
       <div class="full"><dt>Reading for this stage</dt><dd><ul class="stage-read">${s.reading.map(b=>`<li><cite>${b.title}</cite>${b.author?` <span class="au">${b.author}</span>`:""}</li>`).join("")}</ul></dd></div>
-      <div class="full"><dt>The week’s balance</dt><dd>${mixBar(s.mix)}</dd></div>
+      <div class="full"><dt>The week’s balance</dt><dd>${mixBox(s.mix)}</dd></div>
     </dl>
   </div></article>`).join("");
 
-$("#spiral").innerHTML=`<thead><tr><th></th>${STAGES.map(s=>`<th scope="col">${s.numeral}<small>${s.name}</small></th>`).join("")}</tr></thead><tbody>${D.map(d=>`<tr style="--c:${qc(d)}"><th scope="row"><a href="#/world-view/${d.id}" style="text-decoration:none">${esc(d.short)}</a></th>${SP[d.id].map((v,j)=>`<td title="${esc(d.short)} · ${STAGES[j].name}: ${["absent","touched","substantial","central"][v]}">${v?`<i class="d${v}"></i>`:""}</td>`).join("")}</tr>`).join("")}</tbody>`;
+const DEPTH=["absent","touched","substantial","central"];
+$("#spiral").innerHTML=`<thead><tr><th></th>${STAGES.map((s,j)=>`<th scope="col" data-c="${j}">${s.numeral}<small>${s.name}</small></th>`).join("")}</tr></thead><tbody>${D.map(d=>`<tr data-r="${d.id}" style="--c:${qc(d)}"><th scope="row"><a href="#/world-view/${d.id}" style="text-decoration:none">${esc(d.short)}</a></th>${SP[d.id].map((v,j)=>`<td data-c="${j}">${v?`<i class="d${v}"></i>`:""}<span class="vh">${DEPTH[v]}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
 
-$("#mixkey").innerHTML=MIXCAT.map(k=>`<span style="--c:${k.c}">${k.n}</span>`).join("");
-$("#mixtable").innerHTML=STAGES.map(s=>`<div class="r"><span class="gr" title="${s.name}">${s.numeral}</span>${mixBar(s.mix,true)}</div>`).join("");
+$("#mixkey").innerHTML=MIXCAT.map(k=>`<button type="button" data-k="${k.k}" aria-pressed="false" style="--c:${k.c}">${esc(k.n)}</button>`).join("");
+$("#mixtable").innerHTML=STAGES.map(s=>`<div class="r"><span class="nm"><span class="gr">${s.numeral}</span><small>${s.name}</small></span><div class="mix" role="img" aria-label="Stage ${s.numeral}, ${s.name}: ${esc(mixLabel(s.mix))}">${mixSegs(s.mix,true)}</div></div>`).join("");
+
+/* Mix bars: hover previews a category, click or tap pins it. A stage card's scope is its own bar; the time table's is the whole section. */
+function mixHl(scope,k){
+  scope.classList.toggle("hl",!!k);
+  scope.querySelectorAll("[data-k]").forEach(e=>{e.classList.toggle("on",e.dataset.k===k);if(e.tagName==="BUTTON")e.setAttribute("aria-pressed",String(!!k&&scope.dataset.pin===k));});
+}
+function mixWire(root,scopeSel){
+  root.addEventListener("pointerover",e=>{if(e.pointerType!=="mouse")return;const el=e.target.closest("[data-k]");if(el)mixHl(el.closest(scopeSel),el.dataset.k);});
+  root.addEventListener("pointerout",e=>{if(e.pointerType!=="mouse")return;const el=e.target.closest("[data-k]");if(!el||(e.relatedTarget&&el.contains(e.relatedTarget)))return;const s=el.closest(scopeSel);mixHl(s,s.dataset.pin||null);});
+  root.addEventListener("click",e=>{const el=e.target.closest("[data-k]");if(!el)return;const s=el.closest(scopeSel),k=el.dataset.k;s.dataset.pin=s.dataset.pin===k?"":k;mixHl(s,s.dataset.pin||null);});
+}
+mixWire($("#stages"),".mixbox");
+mixWire($("#c-time"),"#c-time");
+
+/* Spiral: hover or tap a cell, a stage column or a domain row to read it in words. */
+const spiral=$("#spiral"),sread=$("#spiralRead");
+let sPin=null;
+function spiralShow(t){
+  spiral.querySelectorAll(".xr,.xc,.x").forEach(e=>e.classList.remove("xr","xc","x"));
+  if(!t){sread.textContent=`${HOVER?"Hover over":"Tap"} a cell or a stage to read it in words.`;return;}
+  const S=STAGES[t.c],d=DM[t.r];
+  if(t.r)spiral.querySelector(`tr[data-r="${t.r}"]`).classList.add("xr");
+  if(S)spiral.querySelectorAll(`[data-c="${t.c}"]`).forEach(e=>e.classList.add("xc"));
+  if(d&&S){spiral.querySelector(`tr[data-r="${t.r}"] td[data-c="${t.c}"]`).classList.add("x");sread.innerHTML=`<b>${esc(d.short)}</b> at Stage ${S.numeral}, ${S.name}: <b>${DEPTH[SP[t.r][t.c]]}</b>.`;}
+  else if(S){const by=v=>D.filter(x=>SP[x.id][t.c]===v).map(x=>esc(x.short)).join(", ")||"none";sread.innerHTML=`<b>Stage ${S.numeral}, ${S.name}.</b> Central: ${by(3)}. Substantial: ${by(2)}.`;}
+  else sread.innerHTML=`<b>${esc(d.short)}</b>: ${SP[t.r].map((v,j)=>`${STAGES[j].numeral} ${DEPTH[v]}`).join(" · ")}.`;
+}
+const sTarget=e=>{const el=e.target.closest("td,th"),tr=el&&el.closest("tr");if(!tr)return null;const t={r:tr.dataset.r||null,c:el.dataset.c!=null?+el.dataset.c:null};return t.r||t.c!=null?t:null;};
+spiral.addEventListener("pointerover",e=>{if(e.pointerType!=="mouse")return;const t=sTarget(e);if(t)spiralShow(t);});
+spiral.addEventListener("mouseleave",()=>spiralShow(sPin));
+spiral.addEventListener("click",e=>{if(e.target.closest("a"))return;const t=sTarget(e);if(!t)return;sPin=sPin&&sPin.r===t.r&&sPin.c===t.c?null:t;spiralShow(sPin);});
+spiral.addEventListener("focusin",e=>{const t=sTarget(e);if(t)spiralShow(t);});
+spiral.addEventListener("focusout",()=>spiralShow(sPin));
+spiralShow(null);
 
 /* ---------- library ---------- */
 $("#library").innerHTML=D.map(d=>`<details class="shelf" style="--c:${qc(d)}"><summary><span class="gr">${d.greek}</span><b>${esc(d.name)}</b><small></small></summary>${readList(d.id)}<p><a class="back" href="#/world-view/${d.id}">Open ${esc(d.short)} in the World View →</a></p></details>`).join("");
