@@ -45,6 +45,8 @@ a{color:inherit}
 .nav nav a:hover{color:var(--ink)}
 .nav nav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--bronze)}
 @media (max-width:560px){.brand i{display:none}.brand b{font-size:.8rem;letter-spacing:.2em}.nav nav a{font-size:.66rem;letter-spacing:.14em}}
+/* Three nav links have to fit a 360px phone beside the wordmark */
+@media (max-width:480px){.brand b{font-size:.74rem;letter-spacing:.1em}.nav nav{gap:10px}.nav nav a{font-size:.6rem;letter-spacing:.08em}.nav nav .the{display:none}}
 
 /* ---------- Ornament ---------- */
 .meander{display:block;width:100%;height:14px;color:var(--bronze)}
@@ -111,13 +113,14 @@ section.first{border-top:0}
 .lineage li:last-child b{font-style:italic}
 @media (max-width:900px){.lineage{grid-template-columns:1fr;border-left:1px solid var(--ink);padding-left:22px;gap:22px}.lineage li{padding:0;border-top:0}.lineage li::before{top:6px;left:-26px}}
 
-.doors{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
 .door{background:var(--ground);padding:clamp(28px,4vw,48px);text-decoration:none;display:grid;gap:12px;transition:background .25s}
 .door:hover{background:var(--ground-2)}
 .door .gr{color:var(--bronze);font-size:1.1rem}
 .door h3{font-size:clamp(2rem,4vw,2.8rem)}
 .door p{color:var(--ink-2);max-width:44ch}
 .door .go{font-family:var(--f-caps);letter-spacing:.2em;font-size:.72rem;color:var(--stone);margin-top:8px}
+@media (max-width:980px){.doors{grid-template-columns:1fr 1fr}}
 @media (max-width:720px){.doors{grid-template-columns:1fr}}
 
 footer{padding-block:40px calc(56px + env(safe-area-inset-bottom,0px))}

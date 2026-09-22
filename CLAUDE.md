@@ -4,7 +4,8 @@ A small, static website (to become an installable iPhone/iPad app) that sets out
 
 - **Home**: a call to arms championing learning and the Greek-derived tradition.
 - **World View**: an interactive mind map of 17 domains in four branches drawn from Aristotle (Organon/instruments, Theoria/knowing, Praxis/acting, Poiesis/making). Domain → sub-areas → cross-links, reading lists and off-ramps.
-- **Curriculum**: how the Companions learnt at Mieza, the later inheritances (Lyceum, Mouseion, Bede’s monastery, House of Wisdom, the university, bottega, Lincei, Royal Society, Lunar Society, Bohr’s institute, Xerox PARC, SpaceX, AI), methods, criticism, seven stages (Α–Ζ), spiral table, time, AI rules, library.
+- **The Story**: how the Companions learnt at Mieza, and the later inheritances (Lyceum, Mouseion, Bede’s monastery, House of Wisdom, the university, bottega, Lincei, Royal Society, Lunar Society, Bohr’s institute, Xerox PARC, SpaceX, AI), with the structure/curiosity spectrum. Sections are numbered I–II.
+- **Curriculum**: methods, criticism, the order, seven stages (Α–Ζ), spiral table, time, AI rules, library. Sections are numbered I–VII.
 
 Owner: Mike. Read `ROADMAP.md` for current workstreams.
 
@@ -16,7 +17,7 @@ No build step. Either open `index.html` directly, or serve the folder:
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Routes are hash-based: `#/`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`.
+Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`. In-page section links use `#s-` (Story) and `#c-` (Curriculum) and are intercepted by the router.
 
 After any data edit, run `node scripts/check-data.js`.
 
@@ -30,7 +31,7 @@ After any data edit, run `node scripts/check-data.js`.
 ## Structure
 
 ```
-index.html            page shell and all static copy (home + curriculum prose)
+index.html            page shell and all static copy (home, story and curriculum prose)
 css/styles.css        every style; design tokens at the top
 js/data/domains.js    C.branches, C.domains (with subs), C.links
 js/data/curriculum.js C.stages, C.mixCategories, C.spiral, C.spectrum

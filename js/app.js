@@ -42,7 +42,7 @@ const HOVER=matchMedia("(hover: hover)").matches;
 })();
 
 /* ---------- router ---------- */
-const PAGES=["home","world-view","curriculum"];
+const PAGES=["home","world-view","curriculum","story"];
 let curPage=null;
 const S0={focus:null,sel:null};
 let st={...S0};
@@ -58,11 +58,11 @@ function route(){
   document.querySelectorAll("[data-nav]").forEach(a=>{if(a.dataset.nav===r.page)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
   if(r.page!==curPage){window.scrollTo(0,0);curPage=r.page;}
   if(r.page==="world-view"){st={focus:r.focus,sel:r.sel};renderMap();renderPanel();renderCrumbs();}
-  document.title=r.page==="home"?"Companions":(r.page==="world-view"?"World View · Companions":"Curriculum · Companions");
+  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions"})[r.page];
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
-  const a=e.target.closest('a[href^="#c-"]');
+  const a=e.target.closest('a[href^="#c-"],a[href^="#s-"]');
   if(a){e.preventDefault();const t=document.querySelector(a.getAttribute("href"));if(t)t.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});}
 });
 
