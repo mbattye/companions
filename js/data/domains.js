@@ -39,7 +39,7 @@ C.domains = [
     "short": "Logic",
     "greek": "Ἀναλυτικά",
     "desc": "The rules of valid thought: how to move from what you know to what follows, and how to see where an argument breaks.",
-    "aristotle": "The Organon: Categories, On Interpretation, Prior & Posterior Analytics, Topics, Sophistical Refutations",
+    "aristotle": "The <em>Organon</em>: <em>Categories</em>, <em>On Interpretation</em>, <em>Prior</em> and <em>Posterior Analytics</em>, <em>Topics</em>, <em>Sophistical Refutations</em>",
     "frontier": "Formal verification, causal inference, argument mapping",
     "subs": [
       {
@@ -81,7 +81,7 @@ C.domains = [
         "desc": "Testing beliefs against opponents, in words.",
         "topics": [
           "Socratic elenchus",
-          "Aristotle’s Topics",
+          "Aristotle’s <em>Topics</em>",
           "Steelmanning",
           "Formal debate"
         ]
@@ -106,7 +106,7 @@ C.domains = [
     "short": "Language",
     "greek": "Ῥητορική",
     "desc": "The instrument everything else passes through: how to read closely, write clearly and persuade honestly.",
-    "aristotle": "Rhetoric; On Interpretation",
+    "aristotle": "<em>Rhetoric</em>; <em>On Interpretation</em>",
     "frontier": "Computational linguistics, plain-language movements, the pitch",
     "subs": [
       {
@@ -172,7 +172,7 @@ C.domains = [
     "short": "Mathematics",
     "greek": "Μαθηματικά",
     "desc": "The study of structure, quantity and change, and the language in which nature seems to be written.",
-    "aristotle": "Mathematics as abstraction (Metaphysics XIII–XIV); Euclid wrote within a generation of Aristotle",
+    "aristotle": "Mathematics as abstraction (<em>Metaphysics</em> XIII–XIV); Euclid wrote within a generation of Aristotle",
     "frontier": "Mathematics of learning machines, topology, cryptography",
     "subs": [
       {
@@ -317,7 +317,7 @@ C.domains = [
     "short": "Philosophy",
     "greek": "Φιλοσοφία",
     "desc": "The discipline of questions about being, knowledge and mind that no other subject can settle.",
-    "aristotle": "Metaphysics, De Anima, Physics I–II",
+    "aristotle": "<em>Metaphysics</em>, <em>De Anima</em>, <em>Physics</em> I–II",
     "frontier": "Philosophy of mind & AI, philosophy of physics, epistemology of models",
     "subs": [
       {
@@ -386,7 +386,7 @@ C.domains = [
     "short": "Religion",
     "greek": "Θεολογία",
     "desc": "What people have held sacred and why: the gods, the faiths, their texts and practices, and reasoning about the divine. Aristotle ranked theology alongside mathematics and physics as a theoretical science.",
-    "aristotle": "Metaphysics VI.1 and XII: theology as first philosophy; the unmoved mover",
+    "aristotle": "<em>Metaphysics</em> VI.1 and XII: theology as first philosophy; the unmoved mover",
     "frontier": "Comparative religion, cognitive science of religion, contemplative neuroscience",
     "subs": [
       {
@@ -467,7 +467,7 @@ C.domains = [
     "short": "Cosmos & Matter",
     "greek": "Φυσική",
     "desc": "Why the physical world is the way it is, from quarks to galaxies.",
-    "aristotle": "Physics, On the Heavens, Meteorology, On Generation and Corruption",
+    "aristotle": "<em>Physics</em>, <em>On the Heavens</em>, <em>Meteorology</em>, <em>On Generation and Corruption</em>",
     "frontier": "Quantum technology, fusion energy, cosmology after JWST",
     "subs": [
       {
@@ -545,7 +545,7 @@ C.domains = [
     "short": "Life & Nature",
     "greek": "Περὶ ζῴων",
     "desc": "The living world: its kinds, its history, its webs, and the human body within it.",
-    "aristotle": "History of Animals, Parts of Animals, Generation of Animals: Aristotle was biology’s first great field observer",
+    "aristotle": "<em>History of Animals</em>, <em>Parts of Animals</em>, <em>Generation of Animals</em>: Aristotle was biology’s first great field observer",
     "frontier": "Genomics, synthetic biology, ecological restoration",
     "subs": [
       {
@@ -623,7 +623,7 @@ C.domains = [
     "short": "History",
     "greek": "Ἱστορία",
     "desc": "<em>Historia</em> means “inquiry”. Deep time, civilisations, states, wars, lives and ideas.",
-    "aristotle": "The Constitution of the Athenians; Aristotle also called his biology <em>historia</em>",
+    "aristotle": "The <em>Constitution of the Athenians</em>; Aristotle also called his biology <em>historia</em>",
     "frontier": "Big History, quantitative history, archaeogenetics",
     "subs": [
       {
@@ -702,7 +702,7 @@ C.domains = [
     "short": "Ethics",
     "greek": "Ἠθικά",
     "desc": "How to live: character, choice, friendship, and the shape of a good life.",
-    "aristotle": "Nicomachean Ethics, Eudemian Ethics",
+    "aristotle": "<em>Nicomachean Ethics</em>, <em>Eudemian Ethics</em>",
     "frontier": "AI ethics, bioethics, the psychology of habit",
     "subs": [
       {
@@ -780,7 +780,7 @@ C.domains = [
     "short": "Politics & Law",
     "greek": "Πολιτικά",
     "desc": "How people govern themselves, and how the city makes possible the good life.",
-    "aristotle": "Politics; the Lyceum’s 158 constitutions",
+    "aristotle": "<em>Politics</em>; the Lyceum’s 158 constitutions",
     "frontier": "Institutional design, state capacity, digital governance",
     "subs": [
       {
@@ -847,7 +847,7 @@ C.domains = [
     "short": "Economics",
     "greek": "Οἰκονομικά",
     "desc": "<em>Oikonomia</em> first meant running a household. Now it covers markets, money, firms and the craft of building ventures.",
-    "aristotle": "Politics I on household and wealth-getting; the pseudo-Aristotelian Economics",
+    "aristotle": "<em>Politics</em> I on household and wealth-getting; the pseudo-Aristotelian <em>Economics</em>",
     "frontier": "Venture building, behavioural economics, energy economics",
     "subs": [
       {
@@ -925,7 +925,7 @@ C.domains = [
     "short": "Body & Play",
     "greek": "Γυμναστική",
     "desc": "Plato’s Academy and Aristotle’s Lyceum were both gymnasia. Strength, skill, competition and play are part of the curriculum.",
-    "aristotle": "Politics VIII on gymnastics; Ethics on pleasure and play",
+    "aristotle": "<em>Politics</em> VIII on gymnastics; <em>Nicomachean Ethics</em> X on pleasure and play",
     "frontier": "Sports science, sleep research, play research",
     "subs": [
       {
@@ -992,7 +992,7 @@ C.domains = [
     "short": "Letters",
     "greek": "Ποιητική",
     "desc": "Literature: the long record of what it is like to be human.",
-    "aristotle": "Poetics: mimesis, plot, catharsis",
+    "aristotle": "<em>Poetics</em>: mimesis, plot, catharsis",
     "frontier": "Interactive narrative, screenwriting, world literatures",
     "subs": [
       {
@@ -1059,7 +1059,7 @@ C.domains = [
     "short": "Music",
     "greek": "Μουσική",
     "desc": "For the Greeks, <em>mousikē</em> covered melody, poetry and dance. It shaped character and it was studied as number.",
-    "aristotle": "Politics VIII on music and character",
+    "aristotle": "<em>Politics</em> VIII on music and character",
     "frontier": "Electronic production, psychoacoustics, generative music",
     "subs": [
       {
@@ -1126,7 +1126,7 @@ C.domains = [
     "short": "Art & Architecture",
     "greek": "Ἀρχιτεκτονική",
     "desc": "Seeing, drawing, sculpting and building: <em>firmitas, utilitas, venustas</em>, or strength, use and beauty.",
-    "aristotle": "Poetics on imitation; Vitruvius wrote three centuries later in the same tradition",
+    "aristotle": "<em>Poetics</em> on imitation; Vitruvius wrote three centuries later in the same tradition",
     "frontier": "Computational design, sustainable building, product design",
     "subs": [
       {
@@ -1204,7 +1204,7 @@ C.domains = [
     "short": "Engineering",
     "greek": "Μηχανική",
     "desc": "Making things that work, at scale, reliably. The <em>Mechanical Problems</em> came out of Aristotle’s school.",
-    "aristotle": "Mechanical Problems (Peripatetic school)",
+    "aristotle": "<em>Mechanical Problems</em> (Peripatetic school)",
     "frontier": "Fusion devices, reusable rockets, advanced manufacturing",
     "subs": [
       {

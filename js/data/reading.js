@@ -216,7 +216,7 @@ C.reading = {
       "tier": "Classic",
       "title": "Five Dialogues",
       "author": "Plato",
-      "note": "Euthyphro, Apology, Crito, Meno, Phaedo"
+      "note": "<em>Euthyphro</em>, <em>Apology</em>, <em>Crito</em>, <em>Meno</em>, <em>Phaedo</em>"
     },
     {
       "tier": "Classic",
