@@ -1,8 +1,10 @@
 # Roadmap
 
+The working plan from October 2026 is in `PLAN.md`; where the two overlap (off-ramps, reading lists), `PLAN.md` wins.
+
 ## 1. Correctness pass: style, formatting, grammar, content
 
-- [x] **Fact-check every historical and textual claim** and add a source note for each. Done in `SOURCES.md` (September 2026); three items marked **?** await a decision. Priority list:
+- [x] **Fact-check every historical and textual claim** and add a source note for each. Done in `SOURCES.md` (September 2026); no open items. Priority list:
   - Mieza: dates (c. 343–340 BC), Aristotle's age (~41), Alexander 13, stone seats and shady walks (Plutarch, *Alexander* 7), the casket *Iliad* and dagger (*Alexander* 8, 26), "life … the good life" (*Alexander* 8), medicine (*Alexander* 8).
   - Aristotle: *Metaphysics* I.1 980a21 and I.2 982b12; *Physics* I.1 (knowable to us / by nature); *NE* I.3 and VI.8 (the young and practical wisdom); *NE* I.6 (truth above friends); *Politics* VII.17 (no lessons before five); *Politics* VIII.3 (four branches); *Metaphysics* VI.1 (theology).
   - Lyceum lecture pattern (Aulus Gellius), 158 constitutions, *peripatos* etymology.
@@ -23,6 +25,8 @@ Run `node scripts/check-data.js` after any data edit: it checks ids, links, spir
 4. **App Store (optional, later).** Wrap with Capacitor (keeps this codebase) and build in Xcode; needs an Apple Developer account. Apple rejects apps that are "just a website", so add app-grade value first: offline, progress tracking, a notebook, notifications for the weekly rhythm. Go native in SwiftUI only if a native experience becomes the point.
 
 ## 3. Off-ramps: external content, sparingly
+
+Superseded by `PLAN.md` §4 (R1–R6), which adds research findings, a durability schema and the free-editions work.
 
 - [x] Schema and rendering (`js/data/resources.js`; shows under "Off-ramps" in a sub-area panel, plus an automatic Wikipedia search link).
 - [ ] Curate up to 3 per sub-area. Types: video (for example 3Blue1Brown for mathematics), article or encyclopaedia, course (for example MIT OpenCourseWare), puzzle (for example Project Euler, Lichess puzzles, Euclidea), tool.

@@ -7,7 +7,7 @@ A small, static website (to become an installable iPhone/iPad app) that sets out
 - **The Story**: how the Companions learnt at Mieza, and the later inheritances (Lyceum, Mouseion, Bede’s monastery, House of Wisdom, the university, bottega, Lincei, Royal Society, Lunar Society, Bohr’s institute, Xerox PARC, SpaceX, AI), with the structure/curiosity spectrum. Sections are numbered I–II.
 - **Curriculum**: methods, criticism, the order, seven stages (Α–Ζ), spiral table, time, AI rules, library. Sections are numbered I–VII.
 
-Owner: Mike. Read `ROADMAP.md` for current workstreams.
+Owner: Mike. Read `PLAN.md` for the current plan (work through it by item ID, log decisions there) and `ROADMAP.md` for the original workstreams.
 
 ## Run it
 
