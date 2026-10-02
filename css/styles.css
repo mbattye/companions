@@ -125,6 +125,9 @@ section.first{border-top:0}
 
 footer{padding-block:40px calc(56px + env(safe-area-inset-bottom,0px))}
 footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:22px;color:var(--stone);font-size:.85rem}
+footer .lic{margin-top:14px;color:var(--stone);font-size:.78rem}
+footer .lic a{text-decoration-color:var(--rule-2);text-underline-offset:3px}
+footer .lic a:hover{color:var(--ink)}
 
 /* ---------- Page header ---------- */
 .phead{padding-block:clamp(48px,7vw,88px) clamp(28px,4vw,44px)}
