@@ -19,14 +19,14 @@ Written 2 October 2026. `ROADMAP.md` keeps the original workstreams; this file i
 
 So the work can outlive any one account, and so family or anyone else can legally continue it.
 
-- [ ] **O1. Choose the licences.**
+- [x] **O1. Choose the licences.**
   Recommendation: **CC BY-SA 4.0 for content** (the prose in `index.html`, everything in `js/data/`, `SOURCES.md`) and **MIT for code** (`js/app.js`, `css/`, `sw.js`, `scripts/`). Share-alike keeps derivatives open, which suits a family commons. The alternative is CC BY 4.0, which lets schools and others reuse it without share-alike.
   Notes: quotations from other translations stay under their own terms (short quotes are fair dealing). Perrin's Plutarch (1919) is public domain. If fonts are ever self-hosted, they carry the SIL Open Font Licence.
-  **Decision:** CC BY-SA 4.0 + MIT, or CC BY 4.0 + MIT.
+  **Decision:** CC BY-SA 4.0 + MIT (decided 2026-10-02).
   **Done when:** `LICENSE` (MIT, code) and `LICENSE-CONTENT` (CC text, content) exist; the README says which files fall under which.
 
 - [ ] **O2. Pre-flight before going public.**
-  - All 14 existing commits are authored `Mike Battye <mbattye@me.com>`, and a public repo exposes that address. **Decision:** accept it, or switch future commits to GitHub's noreply address (`git config user.email <id>+mbattye@users.noreply.github.com`). Rewriting existing history is possible but disruptive, so not recommended.
+  - All 14 existing commits are authored `Mike Battye <mbattye@me.com>`, and a public repo exposes that address. **Decision:** accept it, or switch future commits to GitHub's noreply address (`git config user.email <id>+mbattye@users.noreply.github.com`). Rewriting existing history is possible but disruptive, so not recommended. **Decided 2026-10-02:** accept it; commits keep `mbattye@me.com`.
   - History scanned on 2 October 2026: no keys or secrets found.
   - Confirm `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` are fine to publish (nothing private in them today).
   **Done when:** decisions recorded in the log.
@@ -157,7 +157,7 @@ Off-ramps stay **pointers, not a syllabus**: at most three per sub-area (94 sub-
 
 **Encyclopaedias.** Wikipedia remains the automatic look-up. Add the Stanford Encyclopedia of Philosophy (and IEP) for philosophy, ethics and religion sub-areas, and MacTutor for the history of mathematics.
 On **Grokipedia**: [PolitiFact (Nov 2025)](https://politifact.com/article/2025/nov/12/Grokipedia-Wikipedia-AI-citations/) found it less careful about sourcing and accuracy than Wikipedia, and a [study reported in May 2026](https://phys.org/news/2026-05-grokipedia-news-sources.html) found it draws more on less reliable and right-leaning news sources on topics including religion, history and literature. That sits badly with this project's rule that every claim must be checkable.
-**Decision:** Recommendation is not to offer it, at least not as a default.
+**Decided 2026-10-02:** not a default. Use Grokipedia only where Wikipedia has no article on the subject.
 
 ### Work items
 
@@ -205,3 +205,6 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-09-22** Curriculum split into The Story (I–II) and Curriculum (I–VII).
 - **2026-09-22** Em dashes and marketing register removed; voice rules updated in `CLAUDE.md`.
 - **2026-10-02** Font and JavaScript dependencies accepted for now. Domain to be chosen later. Open source goes first.
+- **2026-10-02** O1: content under CC BY-SA 4.0 (`LICENSE-CONTENT`), code under MIT (`LICENSE`); the README lists which files fall under which, and anything unlisted counts as content.
+- **2026-10-02** O2 (part): `mbattye@me.com` stays as the commit address in a public repo; no switch to the noreply address.
+- **2026-10-02** R1/R5: Wikipedia is the default look-up; Grokipedia only where Wikipedia has no article.
