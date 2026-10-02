@@ -31,7 +31,7 @@ So the work can outlive any one account, and so family or anyone else can legall
   - Confirm `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` are fine to publish (nothing private in them today).
   **Done when:** decisions recorded in the log.
 
-- [ ] **O3. A README for strangers and descendants.**
+- [x] **O3. A README for strangers and descendants.**
   What Companions is and why, how to run it (open `index.html`, or `python3 -m http.server`), how it is hosted, the licences, and **how to make your own family's copy** (fork, edit `js/data/`, deploy).
   **Done when:** someone with no context can run and fork it from the README alone.
 
@@ -208,3 +208,4 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-10-02** O1: content under CC BY-SA 4.0 (`LICENSE-CONTENT`), code under MIT (`LICENSE`); the README lists which files fall under which, and anything unlisted counts as content.
 - **2026-10-02** O2 (part): `mbattye@me.com` stays as the commit address in a public repo; no switch to the noreply address.
 - **2026-10-02** R1/R5: Wikipedia is the default look-up; Grokipedia only where Wikipedia has no article.
+- **2026-10-02** Footer carries a one-line licence note. O3: README rewritten for strangers and family (what it is, run, files, hosting, own copy, licences). GitHub forking only works once O4 makes the repo public; until then the clone and ZIP routes need access.
