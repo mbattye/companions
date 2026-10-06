@@ -35,7 +35,7 @@ So the work can outlive any one account, and so family or anyone else can legall
   What Companions is and why, how to run it (open `index.html`, or `python3 -m http.server`), how it is hosted, the licences, and **how to make your own family's copy** (fork, edit `js/data/`, deploy).
   **Done when:** someone with no context can run and fork it from the README alone.
 
-- [ ] **O4. Make the repository public.**
+- [x] **O4. Make the repository public.**
   `gh repo edit mbattye/companions --visibility public --accept-visibility-change-consequences`. This is outward-facing and irreversible in practice (copies get made), so only with Mike's explicit go-ahead at the time. Cloudflare deploys keep working unchanged.
   **Done when:** public, with licences visible on GitHub.
 
@@ -210,3 +210,4 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-10-02** R1/R5: Wikipedia is the default look-up; Grokipedia only where Wikipedia has no article.
 - **2026-10-02** Footer carries a one-line licence note. O3: README rewritten for strangers and family (what it is, run, files, hosting, own copy, licences). GitHub forking only works once O4 makes the repo public; until then the clone and ZIP routes need access.
 - **2026-10-06** O2 closed: `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` confirmed fine to publish.
+- **2026-10-06** O4 done: `mbattye/companions` made public with Mike’s go-ahead; description and homepage set. GitHub’s licence badge shows MIT (it reads `LICENSE` only); the README explains the split.

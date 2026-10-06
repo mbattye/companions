@@ -4,7 +4,7 @@ An Aristotelian curriculum for the modern student, assisted by AI.
 
 Companions sets out what is worth knowing and an order in which to learn it, drawn from the way Aristotle taught Alexander and his companions at Mieza. A learner works with a mentor and an AI tutor, and the tutor never does the work for them. It is written to be passed on, family first: a small website that runs on any device, needs no accounts, and anyone may copy and adapt.
 
-Live at **https://companions.mbattye.workers.dev**. Source at **https://github.com/mbattye/companions** (private until it is made public; see `PLAN.md`, item O4).
+Live at **https://companions.mbattye.workers.dev**. Source at **https://github.com/mbattye/companions**.
 
 ## What is in it
 
