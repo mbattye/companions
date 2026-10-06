@@ -25,10 +25,10 @@ So the work can outlive any one account, and so family or anyone else can legall
   **Decision:** CC BY-SA 4.0 + MIT (decided 2026-10-02).
   **Done when:** `LICENSE` (MIT, code) and `LICENSE-CONTENT` (CC text, content) exist; the README says which files fall under which.
 
-- [ ] **O2. Pre-flight before going public.**
+- [x] **O2. Pre-flight before going public.**
   - All 14 existing commits are authored `Mike Battye <mbattye@me.com>`, and a public repo exposes that address. **Decision:** accept it, or switch future commits to GitHub's noreply address (`git config user.email <id>+mbattye@users.noreply.github.com`). Rewriting existing history is possible but disruptive, so not recommended. **Decided 2026-10-02:** accept it; commits keep `mbattye@me.com`.
   - History scanned on 2 October 2026: no keys or secrets found.
-  - Confirm `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` are fine to publish (nothing private in them today).
+  - Confirm `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` are fine to publish (nothing private in them today). **Confirmed 2026-10-06.**
   **Done when:** decisions recorded in the log.
 
 - [x] **O3. A README for strangers and descendants.**
@@ -209,3 +209,4 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-10-02** O2 (part): `mbattye@me.com` stays as the commit address in a public repo; no switch to the noreply address.
 - **2026-10-02** R1/R5: Wikipedia is the default look-up; Grokipedia only where Wikipedia has no article.
 - **2026-10-02** Footer carries a one-line licence note. O3: README rewritten for strangers and family (what it is, run, files, hosting, own copy, licences). GitHub forking only works once O4 makes the repo public; until then the clone and ZIP routes need access.
+- **2026-10-06** O2 closed: `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` confirmed fine to publish.
