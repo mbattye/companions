@@ -6,6 +6,8 @@ A small, static website (to become an installable iPhone/iPad app) that sets out
 - **World View**: an interactive mind map of 17 domains in four branches drawn from Aristotle (Organon/instruments, Theoria/knowing, Praxis/acting, Poiesis/making). Domain → sub-areas → cross-links, reading lists and off-ramps.
 - **The Story**: how the Companions learnt at Mieza, and the later inheritances (Lyceum, Mouseion, Bede’s monastery, House of Wisdom, the university, bottega, Lincei, Royal Society, Lunar Society, Bohr’s institute, Xerox PARC, SpaceX, AI), with the structure/curiosity spectrum. Sections are numbered I–II.
 - **Curriculum**: methods, criticism, the order, seven stages (Α–Ζ), spiral table, time, AI rules, library. Sections are numbered I–VII.
+- **Start here**: the starter path for Stage Α (a child’s twelve weeks in two tracks, an adult’s month), printable per plan.
+- **Glossary**: Greek terms with meaning and citation; first uses in the copy link to it.
 
 Owner: Mike. Read `PLAN.md` for the current plan (work through it by item ID, log decisions there) and `ROADMAP.md` for the original workstreams.
 
@@ -17,7 +19,7 @@ No build step. Either open `index.html` directly, or serve the folder:
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`, `#/glossary`, `#/glossary/<term>`. In-page section links use `#s-` (Story) and `#c-` (Curriculum) and are intercepted by the router.
+Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`, `#/glossary`, `#/glossary/<term>`, `#/start`. In-page section links use `#s-` (Story), `#c-` (Curriculum) and `#start-` (Start here) and are intercepted by the router.
 
 After any data edit, run `node scripts/check-data.js`.
 
@@ -39,6 +41,7 @@ js/data/reading.js    C.reading  (per domain, tiers Begin | Classic | Deeper)
 js/data/resources.js  C.resources (per sub-area off-ramps)
 js/data/prompts.js    C.prompts (tutor prompt: base rules, stage and sub-area templates)
 js/data/glossary.js   C.glossary (Greek terms: transliteration, polytonic, meaning, note, citation)
+js/data/starter.js    C.starter (the starter path: child twelve weeks in two tracks, adult month)
 js/app.js             router, SVG mind map, panels, curriculum renderers, tutor prompts, search
 manifest.webmanifest  web app name, colours, icons
 sw.js                 service worker (offline cache)

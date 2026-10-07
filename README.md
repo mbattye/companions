@@ -12,6 +12,7 @@ Live at **https://companions.mbattye.workers.dev**. Source at **https://github.c
 - **World View**: a map of 17 domains in Aristotle’s four branches (instruments, knowing, acting, making). Open a domain to see its sub-areas, how they connect, what to read and where to go next.
 - **The Story**: how the Companions learnt at Mieza, and the rooms that inherited the method, from the Lyceum to the AI lab.
 - **Curriculum**: methods, seven stages (Α–Ζ) from wonder to wisdom, the spiral of return, how the time is spent, rules for using the machine, and a library.
+- **Start here**: what to do on Monday. Twelve weeks of Stage Α for a child, alongside school or at home, and a month for an adult. Printable.
 - **Glossary**: the Greek words the site uses, each with a source you can check.
 
 ## Run it
@@ -48,6 +49,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step and no dependencies,
 | `js/data/resources.js` | A few external pointers (“off-ramps”) per sub-area |
 | `js/data/prompts.js` | The AI tutor prompts: the base rules, and templates for each stage and sub-area |
 | `js/data/glossary.js` | Greek terms with meaning and a checkable citation |
+| `js/data/starter.js` | The starter path: weekly plans and daily rhythms for Stage Α |
 | `js/app.js` | Page routing, the map, panels and tables, tutor prompts, search |
 | `sw.js`, `manifest.webmanifest`, `assets/icons/` | Offline support, app name and icon |
 | `scripts/check-data.js` | Checks the data files for mistakes |
@@ -81,6 +83,7 @@ Companions is meant to be adapted: your own reading, your own order, your own fa
    - Domains and sub-areas: `js/data/domains.js`. Every domain needs a branch, Greek name, description, an “In Aristotle” line, a frontier and 5–6 sub-areas, plus a row in `C.spiral` (`curriculum.js`) and a reading list (`reading.js`). Sub-area IDs are short, lowercase and unique; links refer to them.
    - Reading lists: `js/data/reading.js`. Off-ramps: `js/data/resources.js` (at most three per sub-area; they are pointers, not a syllabus).
    - Stages, time and the spiral: `js/data/curriculum.js`.
+   - The starter path (first weeks of Stage Α): `js/data/starter.js`.
    - The name: `<title>` in `index.html`, and `name` and `short_name` in `manifest.webmanifest`.
 3. **Check it.** Run `node scripts/check-data.js`, then open `index.html` and look.
 4. **Publish it** (optional).
