@@ -12,6 +12,7 @@ Live at **https://companions.mbattye.workers.dev**. Source at **https://github.c
 - **World View**: a map of 17 domains in Aristotle’s four branches (instruments, knowing, acting, making). Open a domain to see its sub-areas, how they connect, what to read and where to go next.
 - **The Story**: how the Companions learnt at Mieza, and the rooms that inherited the method, from the Lyceum to the AI lab.
 - **Curriculum**: methods, seven stages (Α–Ζ) from wonder to wisdom, the spiral of return, how the time is spent, rules for using the machine, and a library.
+- **Glossary**: the Greek words the site uses, each with a source you can check.
 
 ## Run it
 
@@ -46,6 +47,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step and no dependencies,
 | `js/data/reading.js` | Reading list per domain (Begin, Classic, Deeper) |
 | `js/data/resources.js` | A few external pointers (“off-ramps”) per sub-area |
 | `js/data/prompts.js` | The AI tutor prompts: the base rules, and templates for each stage and sub-area |
+| `js/data/glossary.js` | Greek terms with meaning and a checkable citation |
 | `js/app.js` | Page routing, the map, panels and tables, tutor prompts, search |
 | `sw.js`, `manifest.webmanifest`, `assets/icons/` | Offline support, app name and icon |
 | `scripts/check-data.js` | Checks the data files for mistakes |

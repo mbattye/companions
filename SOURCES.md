@@ -101,6 +101,10 @@ Aristotle is cited by book, chapter and Bekker number. Plutarch’s *Life of Ale
 | Bloom’s two sigma | Curriculum II | B. S. Bloom, “The 2 Sigma Problem”, *Educational Researcher* 13(6), 1984, 4–16. Later work finds smaller effects (e.g. VanLehn 2011, *d* ≈ 0.79; Nickow, Oreopoulos & Quan 2020, pooled ≈ 0.37 SD). Caveat added | ✎ |
 | “I wish I’d put it that way” | Curriculum IV | Our paraphrase of Daniel Dennett’s version of Rapoport’s rules (*Intuition Pumps*, 2013). Not presented as a quotation | ✓ |
 
+## Glossary
+
+Each term in `js/data/glossary.js` carries its own citation (work, book or section, and Bekker or standard reference), shown on the Glossary page. Added 7 October 2026. Five rest on claims already checked above (*aretē*, *hetairoi*, *peripatos*, *historia*, *scholē*). The other Bekker ranges were written without the texts open, so they are **?** until checked against an edition or the Perseus texts; do this at the first annual review (`STEWARDS.md`).
+
 ## Our own prescriptions
 
 Stage ages, the time mixes, spiral depths and spectrum positions are our reading, not history, and the site labels them that way. One mismatch was fixed: Curriculum VII said making never falls below a fifth of the week after Stage Δ, but Stage Ε has 15 per cent. The copy now says workshop time never falls below 15 per cent, and the category is renamed “Workshop & real tasks” so it is not confused with Stage Δ, *Making*.

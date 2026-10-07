@@ -17,7 +17,7 @@ No build step. Either open `index.html` directly, or serve the folder:
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`. In-page section links use `#s-` (Story) and `#c-` (Curriculum) and are intercepted by the router.
+Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`, `#/glossary`, `#/glossary/<term>`. In-page section links use `#s-` (Story) and `#c-` (Curriculum) and are intercepted by the router.
 
 After any data edit, run `node scripts/check-data.js`.
 
@@ -38,6 +38,7 @@ js/data/curriculum.js C.stages, C.mixCategories, C.spiral, C.spectrum
 js/data/reading.js    C.reading  (per domain, tiers Begin | Classic | Deeper)
 js/data/resources.js  C.resources (per sub-area off-ramps)
 js/data/prompts.js    C.prompts (tutor prompt: base rules, stage and sub-area templates)
+js/data/glossary.js   C.glossary (Greek terms: transliteration, polytonic, meaning, note, citation)
 js/app.js             router, SVG mind map, panels, curriculum renderers, tutor prompts, search
 manifest.webmanifest  web app name, colours, icons
 sw.js                 service worker (offline cache)
@@ -61,7 +62,8 @@ Data files are plain scripts that attach to `window.C` (not ES modules) so the s
 
 - British English (colour, organisation, learnt, practise as verb). Curly quotes and apostrophes (’ “ ”). En dashes for ranges (343–340 BC); no em dashes.
 - Short sentences, active voice, confident but honest. No marketing register: headings state rather than ask, no superlatives (“the most … ever built”), no “not just X, it’s Y”. Antithesis (“a tutor, not a substitute”) is part of the voice, so keep it for claims that matter and cut it elsewhere. Mark conjecture as conjecture; no invented quotations. Every classical citation must be checkable (work + book/section).
-- Greek is polytonic and set in `.gr` (GFS Didot). Check accents and breathings when editing.
+- Greek is polytonic and set in `.gr` (GFS Didot), with `lang="grc"` on the Greek itself (not on mixed Greek and English). Check accents and breathings when editing.
+- Glossary terms link automatically: the first `<em>` in a page or panel whose text is a glossary transliteration becomes a link to its entry. Write the term in `<em>` and add it to `C.glossary`; no markup needed.
 - Our own prescriptions (stage ages, time mixes, spiral depths, spectrum positions) are labelled as our reading, not history.
 
 ## Design system
