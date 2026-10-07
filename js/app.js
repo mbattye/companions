@@ -3,7 +3,7 @@
  * Routing is hash-based: #/, #/world-view[/domain[/sub]], #/curriculum.
  */
 (function(){
-const {branches:Q, domains:D, links:LINKDATA, reading:READ, stages:STAGES, spiral:SP, spectrum:SPECTRUM, mixCategories:MIXCAT, resources:RES={}, glossary:GLOSS=[]}=window.C;
+const {branches:Q, domains:D, links:LINKDATA, reading:READ, stages:STAGES, spiral:SP, spectrum:SPECTRUM, mixCategories:MIXCAT, resources:RES={}, glossary:GLOSS=[], starter:START={}}=window.C;
 const $=s=>document.querySelector(s);
 const strip=s=>s.replace(/<[^>]+>/g,"");
 const esc=s=>String(s).replace(/&(?!\w+;)/g,"&amp;");
@@ -95,7 +95,7 @@ document.addEventListener("click",async e=>{
 })();
 
 /* ---------- router ---------- */
-const PAGES=["home","world-view","curriculum","story","glossary"];
+const PAGES=["home","world-view","curriculum","story","glossary","start"];
 let curPage=null;
 const S0={focus:null,sel:null};
 let st={...S0};
@@ -112,11 +112,11 @@ function route(){
   if(r.page!==curPage){window.scrollTo(0,0);curPage=r.page;}
   if(r.page==="world-view"){st={focus:r.focus,sel:r.sel};renderMap();renderPanel();renderCrumbs();}
   if(r.page==="glossary")showTerm(r.term);
-  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions"})[r.page];
+  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions","start":"Start here · Companions"})[r.page];
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
-  const a=e.target.closest('a[href^="#c-"],a[href^="#s-"]');
+  const a=e.target.closest('a[href^="#c-"],a[href^="#s-"],a[href^="#start-"]');
   if(a){e.preventDefault();const t=document.querySelector(a.getAttribute("href"));if(t)t.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});}
 });
 
@@ -375,7 +375,7 @@ STAGES.forEach((st,i)=>{
   add("Stage",`Stage ${st.numeral} · ${st.name}`,st.span,[st.greek,st.aim,st.what,st.how,st.proof,st.domains.map(id=>DM[id].name).join(" ")].join(" "),toStage(i),2);
   st.reading.forEach(b=>add("Book",b.title,[b.author,"Stage "+st.numeral+" reading"].filter(Boolean).join(" · "),b.author,toStage(i),5));
 });
-const PAGE_NAMES={home:"Home",story:"The Story",curriculum:"Curriculum"};
+const PAGE_NAMES={home:"Home",story:"The Story",curriculum:"Curriculum",start:"Start here"};
 document.querySelectorAll(".page").forEach(pg=>{
   const name=pg.id.slice(2);if(!PAGE_NAMES[name])return;
   pg.querySelectorAll("h2").forEach(h=>{const sec=h.closest("section")||h;add("Section",h.textContent,PAGE_NAMES[name],(sec.querySelector(".eyebrow")||{}).textContent,()=>jump("#/"+(name==="home"?"":name),()=>sec),3);});
@@ -428,6 +428,35 @@ document.addEventListener("keydown",e=>{
   e.preventDefault();openSearch();
 });
 
+/* ---------- starter path ---------- */
+/* Stage Α made concrete (starter.js). Each week links its sub-area and offers that sub-area's tutor prompt. */
+const subLink=id=>{const sb=SUB[id];return`<a href="#/world-view/${sb.dom}/${id}">${sb.name}</a>`;};
+$("#starter").innerHTML=[["child","Α","Child · twelve weeks"],["adult","Α","Adult · one month"]].filter(([k])=>START[k]).map(([k,num,label])=>{const P=START[k];return`
+<section class="plan" id="start-${k}"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow"><span class="gr" lang="grc">${num}</span><span class="caps">${label}</span></div><h2>${P.title}</h2><p class="lede">${P.who}</p></div>
+  <div class="plan-acts"><button class="btn ghost" type="button" data-print-plan="${k}">Print this plan</button></div>
+  <div class="tracks">${P.tracks.map(t=>`<div class="track"><h3 class="caps">${P.tracks.length>1?t.name:"The rhythm"}</h3><dl class="ledger">${t.rhythm.map(([w,d])=>`<div><dt>${w}</dt><dd>${d}</dd></div>`).join("")}</dl></div>`).join("")}</div>
+  <p class="kit"><b>You will need.</b> ${P.kit}</p>
+  <ol class="weeks">${P.weeks.map((w,i)=>`<li class="week" id="start-${k}-${i+1}">
+    <div class="wk-n"><span class="caps">Week</span><b>${i+1}</b><small>Cabinet: ${w.cabinet} finds</small></div>
+    <div><h3>${w.title}</h3><dl class="wk">
+      <div><dt>Read</dt><dd>${w.read}</dd></div>
+      <div><dt>Make</dt><dd>${w.make}</dd></div>
+      <div><dt>Field</dt><dd>${w.field}</dd></div>
+      <div><dt>Symposium</dt><dd>${w.ask}</dd></div>
+    </dl>
+    <div class="tutor wk-acts"><div class="tutor-acts"><span class="wk-sub">In the World View: ${subLink(w.sub)}</span><button class="btn ghost" type="button" data-copy="sub:${w.sub}">Copy tutor prompt</button><span class="tutor-st" role="status" aria-live="polite"></span></div></div></div>
+  </li>`).join("")}</ol>
+</div></section>`;}).join("");
+/* Print one plan: mark which, print, then clear. */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-print-plan]");if(!b)return;
+  document.body.dataset.print=b.dataset.printPlan;
+  addEventListener("afterprint",()=>{delete document.body.dataset.print;},{once:true});
+  window.print();
+});
+["child","adult"].forEach(k=>(START[k]?START[k].weeks:[]).forEach((w,i)=>add("Week",`Week ${i+1} · ${w.title}`,START[k].title,[w.read,w.make,w.field,w.ask].join(" "),()=>jump("#/start",()=>$(`#start-${k}-${i+1}`)),3)));
+
 /* ---------- glossary ---------- */
 $("#glossary").innerHTML=[...GLOSS].sort((a,b)=>a.id.localeCompare(b.id)).map(g=>`<div class="g" id="g-${g.id}"><dt><span class="gr" lang="grc">${g.greek}</span><i>${g.term}</i></dt><dd><p class="g-m">${g.meaning}</p><p>${g.note}</p><p class="g-c">${g.cite}</p></dd></div>`).join("");
 function showTerm(id){
@@ -448,7 +477,7 @@ function linkTerms(root){
     em.replaceWith(a);a.appendChild(em);
   });
 }
-["#p-home","#p-story","#p-curriculum","#p-world-view .phead"].forEach(sel=>linkTerms($(sel)));
+["#p-home","#p-story","#p-curriculum","#p-start","#p-world-view .phead"].forEach(sel=>linkTerms($(sel)));
 GLOSS.forEach(g=>add("Term",g.term+" · "+g.greek,g.meaning,[g.greek,g.meaning,g.note].join(" "),()=>jump("#/glossary/"+g.id,()=>$("#g-"+g.id)),1));
 /* ---------- boot ---------- */
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(curPage==="world-view")renderMap();},60);}).observe(wrap);
