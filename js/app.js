@@ -3,13 +3,14 @@
  * Routing is hash-based: #/, #/world-view[/domain[/sub]], #/curriculum.
  */
 (function(){
-const {branches:Q, domains:D, links:LINKDATA, reading:READ, stages:STAGES, spiral:SP, spectrum:SPECTRUM, mixCategories:MIXCAT, resources:RES={}}=window.C;
+const {branches:Q, domains:D, links:LINKDATA, reading:READ, stages:STAGES, spiral:SP, spectrum:SPECTRUM, mixCategories:MIXCAT, resources:RES={}, glossary:GLOSS=[]}=window.C;
 const $=s=>document.querySelector(s);
 const strip=s=>s.replace(/<[^>]+>/g,"");
 const esc=s=>String(s).replace(/&(?!\w+;)/g,"&amp;");
 
 /* ---------- indexes ---------- */
-const DM={},SUB={};
+const DM={},SUB={},GL={};
+GLOSS.forEach(g=>{GL[g.id]=g;});
 D.forEach((d,i)=>{d.i=i;DM[d.id]=d;d.subs.forEach(s=>{s.dom=d.id;SUB[s.id]=s;});});
 const LINKS={};
 LINKDATA.forEach(({a,b,why:w})=>{if(!SUB[a]||!SUB[b])return;(LINKS[a]=LINKS[a]||[]).push({to:b,w});(LINKS[b]=LINKS[b]||[]).push({to:a,w});});
@@ -94,14 +95,14 @@ document.addEventListener("click",async e=>{
 })();
 
 /* ---------- router ---------- */
-const PAGES=["home","world-view","curriculum","story"];
+const PAGES=["home","world-view","curriculum","story","glossary"];
 let curPage=null;
 const S0={focus:null,sel:null};
 let st={...S0};
 function parse(){
   const parts=location.hash.replace(/^#\/?/,"").split("/").filter(Boolean);
   const page=PAGES.includes(parts[0])?parts[0]:"home";
-  return{page,focus:page==="world-view"&&DM[parts[1]]?parts[1]:null,sel:page==="world-view"&&SUB[parts[2]]&&SUB[parts[2]].dom===parts[1]?parts[2]:null};
+  return{page,focus:page==="world-view"&&DM[parts[1]]?parts[1]:null,sel:page==="world-view"&&SUB[parts[2]]&&SUB[parts[2]].dom===parts[1]?parts[2]:null,term:page==="glossary"&&GL[parts[1]]?parts[1]:null};
 }
 function go(focus,sel){location.hash="#/world-view"+(focus?"/"+focus:"")+(sel?"/"+sel:"");}
 function route(){
@@ -110,7 +111,8 @@ function route(){
   document.querySelectorAll("[data-nav]").forEach(a=>{if(a.dataset.nav===r.page)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
   if(r.page!==curPage){window.scrollTo(0,0);curPage=r.page;}
   if(r.page==="world-view"){st={focus:r.focus,sel:r.sel};renderMap();renderPanel();renderCrumbs();}
-  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions"})[r.page];
+  if(r.page==="glossary")showTerm(r.term);
+  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions"})[r.page];
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
@@ -158,7 +160,7 @@ function renderMap(){
     // centre
     const rc=Math.min(r1*.3,46);
     h+=`<circle cx="${c}" cy="${c}" r="${f1(rc)}" fill="var(--ground)" stroke="var(--rule)"/>`;
-    h+=`<text x="${c}" y="${c}" dy=".35em" text-anchor="middle" font-size="${f1(Math.max(11,rc*.36))}" style="font-family:var(--f-greek);fill:var(--bronze)">Κόσμος</text>`;
+    h+=`<text x="${c}" y="${c}" dy=".35em" text-anchor="middle" font-size="${f1(Math.max(11,rc*.36))}" lang="grc" style="font-family:var(--f-greek);fill:var(--bronze)">Κόσμος</text>`;
     D.forEach(d=>{
       const a=ang(d.i),[x,y]=pt(a,r1,c);
       h+=`<g class="node" data-dom="${d.id}" tabindex="0" role="button" aria-label="${esc(d.name)}"><circle cx="${f1(x)}" cy="${f1(y)}" r="16" fill="transparent"/><circle class="dot" cx="${f1(x)}" cy="${f1(y)}" r="${W<480?4:5}" fill="${qc(d)}"/>${label(x,y,a,d.short,fs,11)}</g>`;
@@ -199,7 +201,7 @@ function renderMap(){
     const words=d.short.split(" ");const lines=d.short.length>11&&words.length>1?[words.slice(0,Math.ceil(words.length/2)).join(" "),words.slice(Math.ceil(words.length/2)).join(" ")]:[d.short];
     const dfs=Math.max(13,Math.min(rc*.3,24));
     lines.forEach((ln,i)=>{h+=`<text x="${c}" y="${f1(c-(lines.length-1)*dfs*.55+i*dfs*1.05-dfs*.25)}" text-anchor="middle" dy=".35em" font-size="${f1(dfs)}" style="font-family:var(--f-display);font-weight:500;fill:var(--ink)">${esc(ln)}</text>`;});
-    h+=`<text x="${c}" y="${f1(c+(lines.length)*dfs*.55+dfs*.15)}" text-anchor="middle" dy=".35em" font-size="${f1(dfs*.62)}" style="font-family:var(--f-greek);fill:var(--bronze)">${esc(d.greek)}</text></g>`;
+    h+=`<text x="${c}" y="${f1(c+(lines.length)*dfs*.55+dfs*.15)}" text-anchor="middle" dy=".35em" font-size="${f1(dfs*.62)}" lang="grc" style="font-family:var(--f-greek);fill:var(--bronze)">${esc(d.greek)}</text></g>`;
     // subs
     d.subs.forEach((s,i)=>{
       const a=sa(i),[x,y]=subPos[s.id],on=st.sel===s.id;
@@ -230,7 +232,7 @@ svg.addEventListener("mouseleave",()=>{svg.classList.remove("hovering");svg.quer
 svg.addEventListener("mouseout",e=>{if(!e.relatedTarget||!e.relatedTarget.closest||!e.relatedTarget.closest(".node[data-dom]")){if(!st.focus&&e.target.closest(".node[data-dom]"))svg.dispatchEvent(new Event("mouseleave"));}});
 
 /* ---------- legend, crumbs, panel ---------- */
-$("#legend").innerHTML=Object.values(Q).map(q=>`<div style="--c:${q.c}"><span class="gr">${q.gr}</span><span>${q.en} · ${q.note}</span></div>`).join("");
+$("#legend").innerHTML=Object.values(Q).map(q=>`<div style="--c:${q.c}"><span class="gr" lang="grc">${q.gr}</span><span>${q.en} · ${q.note}</span></div>`).join("");
 
 function renderCrumbs(){
   let h=`<button type="button" data-go="">All domains</button>`;
@@ -246,11 +248,11 @@ function renderPanel(){
     const nLinks=LINKDATA.length,nSubs=Object.keys(SUB).length;
     h=`<span class="gr big">Κόσμος</span><h2>The knowable world</h2>
     <p>${D.length} domains, ${nSubs} parts and ${nLinks} cross-connections. The ring runs clockwise from the top through the four branches. Instruments come first because every other branch depends on them. The lines inside show how strongly two domains are linked. ${HOVER?"Hover to trace them, or select a domain to open it.":"Select a domain to open it and see its links."}</p>
-    <dl>${Object.values(Q).map(q=>`<div><dt style="color:${q.c}">${q.gr} · ${q.en}</dt><dd>${D.filter(d=>Q[d.branch]===q).map(d=>`<button class="back" style="text-transform:none;letter-spacing:0;font-family:var(--f-text);font-size:.95rem;color:var(--ink-2);border-bottom:1px dotted var(--rule);margin-right:10px" data-open="${d.id}">${esc(d.name)}</button>`).join(" ")}</dd></div>`).join("")}</dl>`;
+    <dl>${Object.values(Q).map(q=>`<div><dt style="color:${q.c}"><span lang="grc">${q.gr}</span> · ${q.en}</dt><dd>${D.filter(d=>Q[d.branch]===q).map(d=>`<button class="back" style="text-transform:none;letter-spacing:0;font-family:var(--f-text);font-size:.95rem;color:var(--ink-2);border-bottom:1px dotted var(--rule);margin-right:10px" data-open="${d.id}">${esc(d.name)}</button>`).join(" ")}</dd></div>`).join("")}</dl>`;
   } else if(!st.sel){
     const d=DM[st.focus];
-    h=`<span class="gr big" style="color:${qc(d)}">${d.greek}</span><h2>${esc(d.name)}</h2><p>${d.desc}</p>
-    <dl><div><dt>Branch</dt><dd>${Q[d.branch].gr} · ${Q[d.branch].en}</dd></div><div><dt>In Aristotle</dt><dd>${d.aristotle}</dd></div><div><dt>Modern frontier</dt><dd>${d.frontier}</dd></div></dl>
+    h=`<span class="gr big" lang="grc" style="color:${qc(d)}">${d.greek}</span><h2>${esc(d.name)}</h2><p>${d.desc}</p>
+    <dl><div><dt>Branch</dt><dd><span lang="grc">${Q[d.branch].gr}</span> · ${Q[d.branch].en}</dd></div><div><dt>In Aristotle</dt><dd>${d.aristotle}</dd></div><div><dt>Modern frontier</dt><dd>${d.frontier}</dd></div></dl>
     <ul class="subs" aria-label="Parts">${d.subs.map(s=>`<li><button type="button" data-sel="${s.id}"><span>${s.name}</span><small>${(LINKS[s.id]||[]).length} link${(LINKS[s.id]||[]).length===1?"":"s"}</small></button></li>`).join("")}</ul>${readList(d.id)}`;
   } else {
     const s=SUB[st.sel],d=DM[s.dom],ls=LINKS[s.id]||[];
@@ -259,6 +261,7 @@ function renderPanel(){
     <div><dt class="caps" style="color:var(--stone);display:block;margin-bottom:8px">Cross-pollinations</dt>${ls.length?`<ul class="xlinks">${ls.map(l=>{const t=SUB[l.to],td=DM[t.dom];return`<li><button type="button" style="--c:${qc(td)}" data-open="${td.id}" data-sel="${t.id}"><b>${t.name} <small>· ${esc(td.short)}</small></b><span>${l.w}</span></button></li>`;}).join("")}</ul>`:`<p class="muted">No mapped links yet.</p>`}</div>${offRamps(s)}`;
   }
   p.innerHTML=h;
+  linkTerms(p);
 }
 /* Off-ramps: curated pointers from resources.js, plus an automatic Wikipedia search. */
 const RTYPE={video:"Watch",article:"Read",course:"Course",puzzle:"Puzzle",tool:"Tool"};
@@ -278,7 +281,7 @@ function panelClick(e){
 $("#panel").addEventListener("click",panelClick);
 
 /* ---------- index ---------- */
-$("#index").innerHTML=Object.entries(Q).map(([k,q])=>`<div class="col" style="--c:${q.c}"><span class="gr">${q.gr} · <span class="caps" style="color:var(--stone)">${q.en}</span></span>${D.filter(d=>d.branch===k).map(d=>`<div><h4><button type="button" data-open="${d.id}">${esc(d.name)}</button></h4><p>${d.subs.map(s=>`<button type="button" data-open="${d.id}" data-sel="${s.id}">${s.name}</button>`).join(" · ")}</p></div>`).join("")}</div>`).join("");
+$("#index").innerHTML=Object.entries(Q).map(([k,q])=>`<div class="col" style="--c:${q.c}"><span class="gr"><span lang="grc">${q.gr}</span> · <span class="caps" style="color:var(--stone)">${q.en}</span></span>${D.filter(d=>d.branch===k).map(d=>`<div><h4><button type="button" data-open="${d.id}">${esc(d.name)}</button></h4><p>${d.subs.map(s=>`<button type="button" data-open="${d.id}" data-sel="${s.id}">${s.name}</button>`).join(" · ")}</p></div>`).join("")}</div>`).join("");
 $("#index").addEventListener("click",e=>{const b=e.target.closest("[data-open]");if(!b)return;go(b.dataset.open,b.dataset.sel||null);$("#crumbs").scrollIntoView({behavior:"smooth",block:"center"});});
 
 /* ---------- curriculum ---------- */
@@ -288,9 +291,9 @@ const mixLabel=m=>MIXCAT.map(k=>k.n+" "+m[k.k]+"%").join(", ");
 const mixSegs=(m,labels)=>MIXCAT.map(k=>`<i data-k="${k.k}"${m[k.k]<12?` class="sm"`:""} style="--c:${k.c};width:${m[k.k]}%">${labels?`<span>${m[k.k]}%</span>`:""}</i>`).join("");
 const mixBox=m=>`<div class="mixbox"><div class="mix" aria-hidden="true">${mixSegs(m)}</div><ul class="mixlegend">${MIXCAT.map(k=>`<li data-k="${k.k}" style="--c:${k.c}">${esc(k.n)} <b>${m[k.k]}%</b></li>`).join("")}</ul></div>`;
 $("#stages").innerHTML=STAGES.map((s,i)=>`<article class="stage" id="stage-${i}">
-  <div class="num">${s.numeral}<small>Stage ${i+1}<br>${s.span}</small></div>
+  <div class="num"><span lang="grc">${s.numeral}</span><small>Stage ${i+1}<br>${s.span}</small></div>
   <div>
-    <div class="stage-head"><h3>${s.name}</h3><span class="gr">${s.greek}</span></div>
+    <div class="stage-head"><h3>${s.name}</h3><span class="gr" lang="grc">${s.greek}</span></div>
     <p class="aim">${s.aim}</p>
     <dl class="stage-body">
       <div class="full"><dt>Domains in focus</dt><dd class="chips">${s.domains.map(id=>`<a href="#/world-view/${id}" style="--c:${qc(DM[id])}">${esc(DM[id].short)}</a>`).join("")}</dd></div>
@@ -305,10 +308,10 @@ $("#stages").innerHTML=STAGES.map((s,i)=>`<article class="stage" id="stage-${i}"
   </div></article>`).join("");
 
 const DEPTH=["absent","touched","substantial","central"];
-$("#spiral").innerHTML=`<thead><tr><th></th>${STAGES.map((s,j)=>`<th scope="col" data-c="${j}">${s.numeral}<small>${s.name}</small></th>`).join("")}</tr></thead><tbody>${D.map(d=>`<tr data-r="${d.id}" style="--c:${qc(d)}"><th scope="row"><a href="#/world-view/${d.id}" style="text-decoration:none">${esc(d.short)}</a></th>${SP[d.id].map((v,j)=>`<td data-c="${j}">${v?`<i class="d${v}"></i>`:""}<span class="vh">${DEPTH[v]}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
+$("#spiral").innerHTML=`<thead><tr><th></th>${STAGES.map((s,j)=>`<th scope="col" data-c="${j}"><span lang="grc">${s.numeral}</span><small>${s.name}</small></th>`).join("")}</tr></thead><tbody>${D.map(d=>`<tr data-r="${d.id}" style="--c:${qc(d)}"><th scope="row"><a href="#/world-view/${d.id}" style="text-decoration:none">${esc(d.short)}</a></th>${SP[d.id].map((v,j)=>`<td data-c="${j}">${v?`<i class="d${v}"></i>`:""}<span class="vh">${DEPTH[v]}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
 
 $("#mixkey").innerHTML=MIXCAT.map(k=>`<button type="button" data-k="${k.k}" aria-pressed="false" style="--c:${k.c}">${esc(k.n)}</button>`).join("");
-$("#mixtable").innerHTML=STAGES.map(s=>`<div class="r"><span class="nm"><span class="gr">${s.numeral}</span><small>${s.name}</small></span><div class="mix" role="img" aria-label="Stage ${s.numeral}, ${s.name}: ${esc(mixLabel(s.mix))}">${mixSegs(s.mix,true)}</div></div>`).join("");
+$("#mixtable").innerHTML=STAGES.map(s=>`<div class="r"><span class="nm"><span class="gr" lang="grc">${s.numeral}</span><small>${s.name}</small></span><div class="mix" role="img" aria-label="Stage ${s.numeral}, ${s.name}: ${esc(mixLabel(s.mix))}">${mixSegs(s.mix,true)}</div></div>`).join("");
 
 /* Mix bars: hover previews a category, click or tap pins it. A stage card's scope is its own bar; the time table's is the whole section. */
 function mixHl(scope,k){
@@ -345,7 +348,7 @@ spiral.addEventListener("focusout",()=>spiralShow(sPin));
 spiralShow(null);
 
 /* ---------- library ---------- */
-$("#library").innerHTML=D.map(d=>`<details class="shelf" style="--c:${qc(d)}"><summary><span class="gr">${d.greek}</span><b>${esc(d.name)}</b><small></small></summary>${readList(d.id)}<p><a class="back" href="#/world-view/${d.id}">Open ${esc(d.short)} in the World View →</a></p></details>`).join("");
+$("#library").innerHTML=D.map(d=>`<details class="shelf" style="--c:${qc(d)}"><summary><span class="gr" lang="grc">${d.greek}</span><b>${esc(d.name)}</b><small></small></summary>${readList(d.id)}<p><a class="back" href="#/world-view/${d.id}">Open ${esc(d.short)} in the World View →</a></p></details>`).join("");
 
 /* ---------- search ---------- */
 /* A client-side index over the data and the page headings. Matching ignores case, accents and breathings ("αρετη" finds "ἀρετή"). Every word typed must match; matches in titles and at word starts rank first. */
@@ -425,6 +428,28 @@ document.addEventListener("keydown",e=>{
   e.preventDefault();openSearch();
 });
 
+/* ---------- glossary ---------- */
+$("#glossary").innerHTML=[...GLOSS].sort((a,b)=>a.id.localeCompare(b.id)).map(g=>`<div class="g" id="g-${g.id}"><dt><span class="gr" lang="grc">${g.greek}</span><i>${g.term}</i></dt><dd><p class="g-m">${g.meaning}</p><p>${g.note}</p><p class="g-c">${g.cite}</p></dd></div>`).join("");
+function showTerm(id){
+  document.querySelectorAll("#glossary .g").forEach(el=>el.classList.toggle("on",el.id==="g-"+id));
+  if(!id)return;
+  const go=()=>$("#g-"+id).scrollIntoView({block:"start"});go();
+  /* On a fresh load the browser may restore an old scroll position after this runs. */
+  if(document.readyState!=="complete")addEventListener("load",()=>setTimeout(go,0),{once:true});
+}
+/* Link the first use of each glossary term (an <em> transliteration) within a page or panel. */
+const GLK={};GLOSS.forEach(g=>{GLK[norm(g.term)]=g.id;});
+function linkTerms(root){
+  const seen=new Set();
+  root.querySelectorAll("em").forEach(em=>{
+    if(em.closest("a,button,summary,h1,h2,h3,.gloss"))return;
+    const id=GLK[norm(em.textContent)];if(!id||seen.has(id))return;seen.add(id);
+    const a=document.createElement("a");a.className="gl";a.href="#/glossary/"+id;a.title=plain(GL[id].meaning);
+    em.replaceWith(a);a.appendChild(em);
+  });
+}
+["#p-home","#p-story","#p-curriculum","#p-world-view .phead"].forEach(sel=>linkTerms($(sel)));
+GLOSS.forEach(g=>add("Term",g.term+" · "+g.greek,g.meaning,[g.greek,g.meaning,g.note].join(" "),()=>jump("#/glossary/"+g.id,()=>$("#g-"+g.id)),1));
 /* ---------- boot ---------- */
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(curPage==="world-view")renderMap();},60);}).observe(wrap);
 route();
