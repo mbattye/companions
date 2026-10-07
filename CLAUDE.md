@@ -37,6 +37,7 @@ js/data/domains.js    C.branches, C.domains (with subs), C.links
 js/data/curriculum.js C.stages, C.mixCategories, C.spiral, C.spectrum
 js/data/reading.js    C.reading  (per domain, tiers Begin | Classic | Deeper)
 js/data/resources.js  C.resources (per sub-area off-ramps)
+js/data/prompts.js    C.prompts (tutor prompt: base rules, stage and sub-area templates)
 js/app.js             router, SVG mind map, panels, curriculum renderers
 manifest.webmanifest  web app name, colours, icons
 sw.js                 service worker (offline cache)
@@ -54,6 +55,7 @@ Data files are plain scripts that attach to `window.C` (not ES modules) so the s
 - Every domain must have: `branch`, `greek`, `desc`, `aristotle`, `frontier`, 5–6 `subs`, a `C.spiral` row and a `C.reading` list.
 - Off-ramps (`C.resources`) are **pointers, not a syllabus**: at most 3 per sub-area, free where possible, durable sources, each with `type` (video | article | course | puzzle | tool), `title`, `by`, `url`, optional `note`. Never bulk-add. The student is meant to find their own sources.
 - Inline HTML in data strings is limited to `<em>`.
+- Tutor prompts (`C.prompts`) are templates, filled by `app.js` from the other data files. The base prompt must keep the seven rules of Curriculum VI in step with `index.html`; placeholders are checked by `check-data.js`.
 
 ## Content and voice
 

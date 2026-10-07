@@ -45,6 +45,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step and no dependencies,
 | `js/data/curriculum.js` | The stages, how time is spent, the spiral table, the structure–curiosity spectrum |
 | `js/data/reading.js` | Reading list per domain (Begin, Classic, Deeper) |
 | `js/data/resources.js` | A few external pointers (“off-ramps”) per sub-area |
+| `js/data/prompts.js` | The AI tutor prompts: the base rules, and templates for each stage and sub-area |
 | `js/app.js` | Page routing, the map, panels and tables |
 | `sw.js`, `manifest.webmanifest`, `assets/icons/` | Offline support, app name and icon |
 | `scripts/check-data.js` | Checks the data files for mistakes |

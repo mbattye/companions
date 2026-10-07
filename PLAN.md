@@ -61,7 +61,7 @@ So the work can outlive any one account, and so family or anyone else can legall
 
 The site describes a curriculum; these make it something a learner and a mentor can use day to day. Suggested order: L1, L2, L3, L4, L5, then L6–L8.
 
-- [ ] **L1. Tutor prompt pack.**
+- [x] **L1. Tutor prompt pack.**
   The Curriculum promises an AI tutor but gives no way to summon one. Build plain-text prompts that work with any model, now or later:
   - a base Socratic prompt that encodes the seven rules in Curriculum VI (attempt first; ask more than tell; never write the work; verify everything; argue the other side; explain it back; the notebook stays by hand);
   - one prompt per stage (Α–Ζ), using its aim, how and machine's-role text;
@@ -213,4 +213,5 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-10-02** Footer carries a one-line licence note. O3: README rewritten for strangers and family (what it is, run, files, hosting, own copy, licences). GitHub forking only works once O4 makes the repo public; until then the clone and ZIP routes need access.
 - **2026-10-06** O2 closed: `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` confirmed fine to publish.
 - **2026-10-06** O4 done: `mbattye/companions` made public with Mike’s go-ahead; description and homepage set. GitHub’s licence badge shows MIT (it reads `LICENSE` only); the README explains the split.
+- **2026-10-07** L1: tutor prompts are templates in `C.prompts`, filled from the data, so a family editing the data gets matching prompts for free. Each copied prompt stands alone (base rules plus context). The tutor’s first move is to ask the learner’s name, age and what they know, so one prompt serves child and adult. Every prompt can be read on the page before copying. The printable export is a client-side `.txt` download from Curriculum VI: the base once, then each stage and sub-area. Copy falls back to a hidden textarea where the Clipboard API is unavailable (`file://`).
 - **2026-10-07** O5 (part): no mirror for now; the yearly archive is a bundle plus a ZIP (the ZIP so a non-developer can restore without git), kept in a git-ignored `archive/` folder and moved to family storage by hand. O6: `STEWARDS.md` names Mike as steward, successor to be named. O7: checklist written; first review pending R6.
