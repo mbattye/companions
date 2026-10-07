@@ -7,7 +7,7 @@ const path = require("path");
 const vm = require("vm");
 
 const root = path.join(__dirname, "..");
-const files = ["domains", "curriculum", "reading", "resources"];
+const files = ["domains", "curriculum", "reading", "resources", "prompts"];
 const ctx = { window: {} };
 vm.createContext(ctx);
 for (const f of files) {
@@ -96,6 +96,20 @@ for (const [id, list] of Object.entries(C.resources || {})) {
   });
 }
 
+/* ---------- tutor prompts ---------- */
+const SLOTS = {
+  base: [],
+  stage: ["numeral", "name", "greek", "span", "aim", "what", "how", "ai", "proof", "domains", "reading"],
+  sub: ["name", "desc", "domain", "branch", "topics", "aristotle", "frontier", "links", "reading"]
+};
+for (const [k, slots] of Object.entries(SLOTS)) {
+  const lines = (C.prompts || {})[k];
+  if (!Array.isArray(lines) || !lines.every(l => typeof l === "string")) { err(`C.prompts.${k}: must be an array of strings`); continue; }
+  for (const [, slot] of lines.join("\n").matchAll(/\{(\w+)\}/g)) if (!slots.includes(slot)) err(`C.prompts.${k}: unknown placeholder {${slot}}`);
+}
+const rules = ((C.prompts || {}).base || []).filter(l => /^\d\. /.test(l)).length;
+if (rules !== 7) err(`C.prompts.base: ${rules} numbered rules (expected the seven in Curriculum VI)`);
+
 /* ---------- strings: markup and typography ---------- */
 const walk = (v, where) => {
   if (typeof v === "string") {
@@ -107,7 +121,7 @@ const walk = (v, where) => {
   } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${where}[${i}]`));
   else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) if (!["url", "c"].includes(k)) walk(x, `${where}.${k}`);
 };
-for (const k of ["branches", "domains", "links", "stages", "mixCategories", "spectrum", "reading", "resources"]) walk(C[k], "C." + k);
+for (const k of ["branches", "domains", "links", "stages", "mixCategories", "spectrum", "reading", "resources", "prompts"]) walk(C[k], "C." + k);
 
 /* ---------- report ---------- */
 warnings.forEach(w => console.log("warn  " + w));
