@@ -43,7 +43,7 @@ function promptFor(key){
   return k==="stage"?BASE+"\n\n"+stageCtx(+id):k==="sub"?BASE+"\n\n"+subCtx(id):BASE;
 }
 const escT=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const tutorBlock=(key,label,cls)=>`<div class="tutor${cls?" "+cls:""}"><dt>Tutor prompt</dt><dd><p>Paste into any AI model to start a session ${label} under the seven rules for the machine.</p><div class="tutor-acts"><button class="btn ghost" type="button" data-copy="${key}">Copy tutor prompt</button><span class="tutor-st" role="status" aria-live="polite"></span></div><details><summary>Read the prompt</summary><pre>${escT(promptFor(key))}</pre></details></dd></div>`;
+const tutorBlock=(key,label,cls)=>`<div class="tutor${cls?" "+cls:""}"><dt>Tutor prompt</dt><dd><p>Paste into any AI model to start a session ${label} under the seven rules for the machine.</p><div class="tutor-acts"><button class="btn ghost" type="button" data-copy="${key}">Copy tutor prompt</button><span class="tutor-st" role="status" aria-live="polite"></span></div>${key.startsWith("sub:")?`<p class="nb-link"><a class="back" href="#/notebook/${key.slice(4)}">Note this in your commonplace book →</a></p>`:""}<details><summary>Read the prompt</summary><pre>${escT(promptFor(key))}</pre></details></dd></div>`;
 /* Clipboard API where allowed (https, localhost); otherwise a hidden textarea, which also covers file:// and older iOS. */
 async function copyText(t){
   try{await navigator.clipboard.writeText(t);return true;}catch(e){}
@@ -95,14 +95,14 @@ document.addEventListener("click",async e=>{
 })();
 
 /* ---------- router ---------- */
-const PAGES=["home","world-view","curriculum","story","glossary","start","mentor"];
+const PAGES=["home","world-view","curriculum","story","glossary","start","mentor","notebook"];
 let curPage=null;
 const S0={focus:null,sel:null};
 let st={...S0};
 function parse(){
   const parts=location.hash.replace(/^#\/?/,"").split("/").filter(Boolean);
   const page=PAGES.includes(parts[0])?parts[0]:"home";
-  return{page,focus:page==="world-view"&&DM[parts[1]]?parts[1]:null,sel:page==="world-view"&&SUB[parts[2]]&&SUB[parts[2]].dom===parts[1]?parts[2]:null,term:page==="glossary"&&GL[parts[1]]?parts[1]:null};
+  return{page,focus:page==="world-view"&&DM[parts[1]]?parts[1]:null,sel:page==="world-view"&&SUB[parts[2]]&&SUB[parts[2]].dom===parts[1]?parts[2]:null,term:page==="glossary"&&GL[parts[1]]?parts[1]:null,tag:page==="notebook"&&(SUB[parts[1]]||DM[parts[1]])?parts[1]:null};
 }
 function go(focus,sel){location.hash="#/world-view"+(focus?"/"+focus:"")+(sel?"/"+sel:"");}
 function route(){
@@ -112,7 +112,8 @@ function route(){
   if(r.page!==curPage){window.scrollTo(0,0);curPage=r.page;}
   if(r.page==="world-view"){st={focus:r.focus,sel:r.sel};renderMap();renderPanel();renderCrumbs();}
   if(r.page==="glossary")showTerm(r.term);
-  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions","start":"Start here · Companions","mentor":"The mentor’s guide · Companions"})[r.page];
+  if(r.page==="notebook")nbOpen(r.tag);
+  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions","start":"Start here · Companions","mentor":"The mentor’s guide · Companions","notebook":"Commonplace book · Companions"})[r.page];
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
@@ -253,7 +254,7 @@ function renderPanel(){
     const d=DM[st.focus];
     h=`<span class="gr big" lang="grc" style="color:${qc(d)}">${d.greek}</span><h2>${esc(d.name)}</h2><p>${d.desc}</p>
     <dl><div><dt>Branch</dt><dd><span lang="grc">${Q[d.branch].gr}</span> · ${Q[d.branch].en}</dd></div><div><dt>In Aristotle</dt><dd>${d.aristotle}</dd></div><div><dt>Modern frontier</dt><dd>${d.frontier}</dd></div></dl>
-    <ul class="subs" aria-label="Parts">${d.subs.map(s=>`<li><button type="button" data-sel="${s.id}"><span>${s.name}</span><small>${(LINKS[s.id]||[]).length} link${(LINKS[s.id]||[]).length===1?"":"s"}</small></button></li>`).join("")}</ul>${readList(d.id)}`;
+    <p><a class="back" href="#/notebook/${d.id}">Note this in your commonplace book →</a></p><ul class="subs" aria-label="Parts">${d.subs.map(s=>`<li><button type="button" data-sel="${s.id}"><span>${s.name}</span><small>${(LINKS[s.id]||[]).length} link${(LINKS[s.id]||[]).length===1?"":"s"}</small></button></li>`).join("")}</ul>${readList(d.id)}`;
   } else {
     const s=SUB[st.sel],d=DM[s.dom],ls=LINKS[s.id]||[];
     h=`<button class="back" type="button" data-open="${d.id}">← ${esc(d.name)}</button><h2>${s.name}</h2><p>${s.desc}</p>
@@ -460,6 +461,179 @@ document.addEventListener("click",e=>{
   window.print();
 });
 ["child","adult"].forEach(k=>(START[k]?START[k].weeks:[]).forEach((w,i)=>add("Week",`Week ${i+1} · ${w.title}`,START[k].title,[w.read,w.make,w.field,w.ask].join(" "),()=>jump("#/start",()=>$(`#start-${k}-${i+1}`)),3)));
+
+/* ---------- commonplace book ---------- */
+/* Local-first notes in IndexedDB: profiles (learners named on this device), notes tagged to a domain or sub-area, and
+   meta (the active learner). Nothing is sent anywhere. Markdown export and import; exported files round-trip exactly. */
+const NB={profiles:[],active:null,notes:[],edit:null,filter:"",q:"",draft:"",draftTag:"",ok:"indexedDB" in window};
+let dbP=null;
+function idb(){
+  return dbP||(dbP=new Promise((res,rej)=>{
+    const r=indexedDB.open("companions",1);
+    r.onupgradeneeded=()=>{const db=r.result;db.createObjectStore("profiles",{keyPath:"id"});db.createObjectStore("notes",{keyPath:"id"}).createIndex("profile","profile");db.createObjectStore("meta",{keyPath:"k"});};
+    r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);
+  }));
+}
+const run=(store,mode,fn)=>idb().then(db=>new Promise((res,rej)=>{const t=db.transaction(store,mode),q=fn(t.objectStore(store));let out;if(q)q.onsuccess=()=>{out=q.result;};t.oncomplete=()=>res(out);t.onerror=t.onabort=()=>rej(t.error);}));
+const all=st=>run(st,"readonly",o=>o.getAll());
+const put=(st,v)=>run(st,"readwrite",o=>o.put(v));
+const del=(st,k)=>run(st,"readwrite",o=>o.delete(k));
+const newId=p=>p+"-"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const tagOf=n=>n.sub?n.sub:n.domain||"";
+const tagName=t=>SUB[t]?`${plain(SUB[t].name)} · ${DM[SUB[t].dom].short}`:DM[t]?DM[t].name:"";
+const tagHref=t=>SUB[t]?`#/world-view/${SUB[t].dom}/${t}`:`#/world-view/${t}`;
+const when=iso=>new Date(iso).toLocaleString("en-GB",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
+const tagOptions=sel=>`<option value="">No tag</option>`+D.map(d=>`<optgroup label="${esc(d.name)}"><option value="${d.id}"${sel===d.id?" selected":""}>${esc(d.name)} (whole domain)</option>${d.subs.map(sb=>`<option value="${sb.id}"${sel===sb.id?" selected":""}>${plain(sb.name)}</option>`).join("")}</optgroup>`).join("");
+const me=()=>NB.profiles.find(p=>p.id===NB.active);
+
+async function nbLoad(){
+  NB.profiles=(await all("profiles")).sort((a,b)=>a.created.localeCompare(b.created));
+  const m=(await all("meta")).find(x=>x.k==="active");
+  NB.active=m&&NB.profiles.some(p=>p.id===m.v)?m.v:(NB.profiles[0]||{}).id||null;
+  NB.notes=NB.active?(await run("notes","readonly",o=>o.index("profile").getAll(NB.active))):[];
+}
+let nbPendingTag=null;
+async function nbOpen(tag){
+  if(tag)nbPendingTag=tag;
+  if(!NB.ok){$("#nb").innerHTML=`<p>This browser cannot store notes. Try a current Safari, Chrome or Firefox.</p>`;return;}
+  try{await nbLoad();}catch(e){$("#nb").innerHTML=`<p>Notes could not be opened here (${esc(e&&e.name||"error")}). Private browsing can block storage.</p>`;return;}
+  nbRender();
+}
+async function nbStorageNote(){
+  const el=$("#nb-store");if(!el)return;
+  let persisted=false;try{persisted=navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():false;}catch(e){}
+  el.textContent=persisted?"This browser has agreed to keep these notes until you clear them.":"This browser may clear these notes if the site goes unused for a while. On iPhone or iPad, add Companions to the Home Screen, and export regularly.";
+}
+/* Keep an unsaved new note across re-renders (filtering, searching, switching to edit). */
+function nbKeep(){const t=$("#nb-text"),g=$("#nb-tag");if(t&&t.dataset.mode==="new"){NB.draft=t.value;NB.draftTag=g.value;}}
+function nbRender(){
+  nbKeep();
+  const box=$("#nb"),p=me();
+  /* A tag from the link (#/notebook/<sub>) applies once there is a book to write in. */
+  const pend=p&&!NB.edit&&nbPendingTag;if(pend){NB.draftTag=nbPendingTag;nbPendingTag=null;}
+  if(!p){
+    box.innerHTML=`<form class="nb-first" id="nb-first"><label for="nb-name">Whose book is this?</label><div class="nb-row"><input id="nb-name" type="text" autocomplete="off" placeholder="A first name or nickname" required maxlength="40"><button class="btn" type="submit">Start the book</button></div><p class="muted">Several people can share a device: each learner gets their own book, named only here.</p></form>`;
+    return;
+  }
+  const days=p.exported?Math.floor((Date.now()-new Date(p.exported))/864e5):null;
+  const stale=NB.notes.length&&(days===null||days>=30);
+  const q=norm(NB.q),f=NB.filter;
+  const shown=NB.notes.filter(n=>(!f||n.sub===f||n.domain===f)&&(!q||norm(n.text).includes(q))).sort((a,b)=>b.created.localeCompare(a.created));
+  box.innerHTML=`
+  <div class="nb-bar">
+    <label class="nb-who">Learner <select id="nb-who">${NB.profiles.map(x=>`<option value="${x.id}"${x.id===p.id?" selected":""}>${escT(x.name)}</option>`).join("")}</select></label>
+    <button class="back" type="button" data-nb="add">Add a learner</button><button class="back" type="button" data-nb="rename">Rename</button><button class="back" type="button" data-nb="remove">Remove</button>
+  </div>
+  <div class="nb-io${stale?" warn":""}">
+    <p>${NB.notes.length} note${NB.notes.length===1?"":"s"} in ${escT(p.name)}’s book. ${p.exported?`Last exported ${days===0?"today":days===1?"yesterday":days+" days ago"}.`:"Not yet exported."}${stale?" Export now to keep a copy.":""}</p>
+    <div class="tutor-acts"><button class="btn ghost" type="button" data-nb="export">Export as Markdown</button><button class="btn ghost" type="button" data-nb="import">Import</button><input type="file" id="nb-file" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden><span class="tutor-st" id="nb-st" role="status" aria-live="polite"></span></div>
+    <p class="muted" id="nb-store"></p>
+  </div>
+  <form class="nb-form" id="nb-form">
+    <label for="nb-text" class="vh">Note</label>
+    <textarea id="nb-text" data-mode="${NB.edit?"edit":"new"}" rows="5" placeholder="A quotation, a question, an idea. Say where it came from.">${escT(NB.edit?(NB.notes.find(n=>n.id===NB.edit)||{}).text||"":NB.draft)}</textarea>
+    <div class="nb-row"><label for="nb-tag">File under</label><select id="nb-tag">${tagOptions(NB.edit?tagOf(NB.notes.find(n=>n.id===NB.edit)||{}):NB.draftTag)}</select>
+    <button class="btn" type="submit">${NB.edit?"Save changes":"Save note"}</button>${NB.edit?`<button class="btn ghost" type="button" data-nb="cancel">Cancel</button>`:""}</div>
+  </form>
+  <div class="nb-filter">
+    <label for="nb-f" class="vh">Show</label><select id="nb-f"><option value="">All notes</option>${tagOptions(f).replace('<option value="">No tag</option>','')}</select>
+    <label for="nb-q" class="vh">Find in notes</label><input id="nb-q" type="search" placeholder="Find in notes" value="${escT(NB.q)}" autocomplete="off">
+  </div>
+  ${shown.length?`<ol class="nb-list">${shown.map(n=>`<li class="note${n.id===NB.edit?" on":""}"><div class="note-h"><time datetime="${n.created}">${when(n.created)}</time>${tagOf(n)?`<a href="${tagHref(tagOf(n))}">${escT(tagName(tagOf(n)))}</a>`:""}</div><div class="note-t">${escT(n.text)}</div><div class="note-a"><button class="back" type="button" data-nb="edit" data-id="${n.id}">Edit</button><button class="back" type="button" data-nb="delete" data-id="${n.id}">Delete</button></div></li>`).join("")}</ol>`:`<p class="muted nb-empty">${NB.notes.length?"No notes match.":"No notes yet. The first is the hardest."}</p>`}`;
+  nbStorageNote();
+  if(pend)$("#nb-text").focus();
+}
+const nbSay=t=>{const el=$("#nb-st");if(el){el.textContent=t;clearTimeout(el.t);el.t=setTimeout(()=>{el.textContent="";},6000);}};
+async function nbSetActive(id){NB.active=id;await put("meta",{k:"active",v:id});NB.edit=null;NB.filter="";NB.q="";NB.draft="";NB.draftTag="";const t=$("#nb-text");if(t)t.value="";await nbLoad();nbRender();}
+async function nbAddProfile(name){
+  name=name.trim().slice(0,40);if(!name)return;
+  const p={id:newId("p"),name,created:new Date().toISOString(),exported:null};
+  await put("profiles",p);await nbSetActive(p.id);
+}
+
+/* Markdown: each note is a heading and its text, preceded by a marker comment that carries the data needed to restore it. */
+const MARK=/^<!-- companions-note (\{.*\}) -->$/;
+function nbToMarkdown(p,notes){
+  const head=`# ${p.name}’s commonplace book\n\nExported from Companions on ${new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}. ${notes.length} note${notes.length===1?"":"s"}, oldest first. Each note keeps a hidden marker line so it can be imported again.\n`;
+  return head+[...notes].sort((a,b)=>a.created.localeCompare(b.created)).map(n=>{
+    const meta={id:n.id,created:n.created,updated:n.updated};if(n.sub)meta.sub=n.sub;else if(n.domain)meta.domain=n.domain;
+    return`\n<!-- companions-note ${JSON.stringify(meta)} -->\n## ${when(n.created)}${tagOf(n)?" · "+tagName(tagOf(n)):""}\n\n${n.text}\n`;
+  }).join("");
+}
+function nbFromMarkdown(md){
+  const lines=md.replace(/\r\n?/g,"\n").split("\n"),out=[];
+  if(lines.some(l=>MARK.test(l))){
+    let cur=null;
+    for(const l of lines){
+      const m=l.match(MARK);
+      if(m){if(cur)out.push(cur);let meta={};try{meta=JSON.parse(m[1]);}catch(e){}cur={meta,body:[],headed:false};continue;}
+      if(!cur)continue;
+      if(!cur.headed&&/^## /.test(l)){cur.headed=true;continue;}
+      cur.body.push(l);
+    }
+    if(cur)out.push(cur);
+    return out.map(c=>({meta:c.meta,text:c.body.join("\n").trim()})).filter(c=>c.text);
+  }
+  /* A Markdown file written elsewhere: each "## " section becomes a note; with no headings, the whole file is one. */
+  const parts=md.split(/^## .*$/m).map(t=>t.trim()).filter(Boolean);
+  const body=/^## /m.test(md)?parts.filter((t,i)=>i>0||!/^# /.test(t)):[md.trim()];
+  return body.filter(Boolean).map(text=>({meta:{},text}));
+}
+async function nbImport(file){
+  const items=nbFromMarkdown(await file.text());
+  const mine=new Map(NB.notes.map(n=>[n.id,n]));let added=0,updated=0,same=0;
+  for(const {meta,text} of items){
+    const now=new Date().toISOString();
+    const n={id:meta.id||newId("n"),profile:NB.active,text,created:meta.created||now,updated:meta.updated||meta.created||now,
+      sub:SUB[meta.sub]?meta.sub:null,domain:SUB[meta.sub]?SUB[meta.sub].dom:DM[meta.domain]?meta.domain:null};
+    const old=mine.get(n.id);
+    if(old&&old.updated>=n.updated){same++;continue;}
+    await put("notes",n);old?updated++:added++;
+  }
+  await nbLoad();nbRender();
+  nbSay(`Imported: ${added} new, ${updated} updated, ${same} already here.`);
+}
+
+document.addEventListener("submit",async e=>{
+  if(e.target.id==="nb-first"){e.preventDefault();await nbAddProfile($("#nb-name").value);return;}
+  if(e.target.id!=="nb-form")return;
+  e.preventDefault();
+  const text=$("#nb-text").value.trim(),tag=$("#nb-tag").value;if(!text){$("#nb-text").focus();return;}
+  const now=new Date().toISOString(),old=NB.edit&&NB.notes.find(n=>n.id===NB.edit);
+  const n={id:old?old.id:newId("n"),profile:NB.active,text,created:old?old.created:now,updated:now,sub:SUB[tag]?tag:null,domain:SUB[tag]?SUB[tag].dom:DM[tag]?tag:null};
+  await put("notes",n);if(!old){NB.draft="";NB.draftTag="";$("#nb-text").value="";}NB.edit=null;
+  /* Ask once for persistent storage; browsers grant it more readily to installed web apps. */
+  try{if(navigator.storage&&navigator.storage.persist&&!(await navigator.storage.persisted()))await navigator.storage.persist();}catch(err){}
+  await nbLoad();nbRender();nbSay("Saved.");
+});
+document.addEventListener("change",async e=>{
+  if(e.target.id==="nb-who")await nbSetActive(e.target.value);
+  else if(e.target.id==="nb-f"){NB.filter=e.target.value;nbRender();$("#nb-f").focus();}
+  else if(e.target.id==="nb-file"&&e.target.files[0])await nbImport(e.target.files[0]);
+});
+document.addEventListener("input",e=>{if(e.target.id!=="nb-q")return;NB.q=e.target.value;const pos=e.target.selectionStart;nbRender();const q=$("#nb-q");q.focus();q.setSelectionRange(pos,pos);});
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-nb]");if(!b)return;
+  const act=b.dataset.nb,p=me();
+  if(act==="add"){const name=prompt("Name of the new learner (kept on this device only):");if(name)await nbAddProfile(name);}
+  else if(act==="rename"){const name=prompt("New name:",p.name);if(name&&name.trim()){p.name=name.trim().slice(0,40);await put("profiles",p);await nbLoad();nbRender();}}
+  else if(act==="remove"){
+    if(!confirm(`Remove ${p.name} and their ${NB.notes.length} note${NB.notes.length===1?"":"s"} from this device? Export first if you want a copy. This cannot be undone.`))return;
+    for(const n of NB.notes)await del("notes",n.id);
+    await del("profiles",p.id);NB.profiles=NB.profiles.filter(x=>x.id!==p.id);
+    if(NB.profiles[0])await nbSetActive(NB.profiles[0].id);else{await del("meta","active");await nbLoad();nbRender();}
+  }
+  else if(act==="export"){
+    const md=nbToMarkdown(p,NB.notes),url=URL.createObjectURL(new Blob([md],{type:"text/markdown;charset=utf-8"}));
+    const a=document.createElement("a");a.href=url;a.download=`commonplace-${p.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"book"}-${new Date().toISOString().slice(0,10)}.md`;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
+    p.exported=new Date().toISOString();await put("profiles",p);await nbLoad();nbRender();nbSay("Exported. Keep the file somewhere safe.");
+  }
+  else if(act==="import")$("#nb-file").click();
+  else if(act==="edit"){nbKeep();NB.edit=b.dataset.id;nbRender();const t=$("#nb-text");t.focus();t.scrollIntoView({block:"center"});}
+  else if(act==="cancel"){NB.edit=null;nbRender();}
+  else if(act==="delete"){const n=NB.notes.find(x=>x.id===b.dataset.id);if(n&&confirm("Delete this note? This cannot be undone.")){await del("notes",n.id);if(NB.edit===n.id)NB.edit=null;await nbLoad();nbRender();nbSay("Deleted.");}}
+});
 
 /* ---------- glossary ---------- */
 $("#glossary").innerHTML=[...GLOSS].sort((a,b)=>a.id.localeCompare(b.id)).map(g=>`<div class="g" id="g-${g.id}"><dt><span class="gr" lang="grc">${g.greek}</span><i>${g.term}</i></dt><dd><p class="g-m">${g.meaning}</p><p>${g.note}</p><p class="g-c">${g.cite}</p></dd></div>`).join("");
