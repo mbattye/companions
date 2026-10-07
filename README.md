@@ -51,6 +51,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step and no dependencies,
 | `scripts/build.sh` | Copies the public files into `dist/` for hosting |
 | `SOURCES.md` | A source for every historical and textual claim |
 | `PLAN.md`, `ROADMAP.md` | What is being worked on, and decisions made |
+| `STEWARDS.md` | Who looks after it, how to restore it, the yearly review |
 | `CLAUDE.md` | House rules: data, voice, design (written for AI assistants, readable by anyone) |
 
 The data files are plain scripts rather than modules, so the site works when opened straight from disk. After changing any of them, run the checker (needs [Node.js](https://nodejs.org)):
@@ -84,6 +85,28 @@ Companions is meant to be adapted: your own reading, your own order, your own fa
    - *Anywhere else:* run `sh scripts/build.sh` and upload `dist/` to any static host.
    - If you add, rename or remove a file listed in `PRECACHE` in `sw.js`, raise its `VERSION` number so installed copies pick up the change. If you add a new top-level file the site needs, add it to `FILES` in `scripts/build.sh`.
 5. **Keep the licences.** Leave `LICENSE` and `LICENSE-CONTENT` in place, credit the original (see below), and publish your changes to the content under the same CC BY-SA 4.0 licence.
+
+## Keeping it safe
+
+`STEWARDS.md` says who looks after Companions, how to bring it back from an archive if GitHub and Cloudflare are gone, and the yearly review.
+
+**The yearly archive.** Once a year, from the project folder:
+
+```sh
+git bundle create archive/companions-YYYY.bundle --all
+git archive --prefix=companions/ -o archive/companions-YYYY.zip HEAD
+```
+
+The bundle holds the full history (restore it with `git clone companions-YYYY.bundle companions`); the ZIP holds the site as it stands, ready to open. `archive/` is ignored by git, so move both files to family storage.
+
+**Adding a mirror.** A second host keeps a live copy if GitHub goes. Create an empty repository on another host (Codeberg or GitLab, say), then add it as a second push address so every `git push` goes to both:
+
+```sh
+git remote set-url --add --push origin git@github.com:mbattye/companions.git
+git remote set-url --add --push origin <address of the mirror>
+```
+
+Record the mirror in `STEWARDS.md`.
 
 ## Working on it
 

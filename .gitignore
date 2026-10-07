@@ -3,3 +3,4 @@ node_modules/
 *.log
 _to_delete/
 dist/
+archive/
