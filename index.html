@@ -40,9 +40,21 @@
       <a href="#/story" data-nav="story"><span class="the">The </span>Story</a>
       <a href="#/world-view" data-nav="world-view">World View</a>
       <a href="#/curriculum" data-nav="curriculum">Curriculum</a>
+      <button type="button" class="nav-search" data-search aria-label="Search" aria-keyshortcuts="/" title="Search (/)"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M13 13L18.5 18.5" stroke="currentColor" stroke-width="1.3"/></svg></button>
     </nav>
   </div>
 </header>
+
+<dialog class="search" id="search" aria-label="Search">
+  <div class="search-bar">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M13 13L18.5 18.5" stroke="currentColor" stroke-width="1.3"/></svg>
+    <input id="search-q" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-list" aria-describedby="search-help" placeholder="Domains, parts, topics, books, stages" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+    <button type="button" class="back" data-search-close>Close</button>
+  </div>
+  <p class="search-st" id="search-st" role="status" aria-live="polite"></p>
+  <ul class="search-list" id="search-list" role="listbox" aria-label="Results"></ul>
+  <p class="search-help" id="search-help">Up and down to move, Enter to open, Escape to close.</p>
+</dialog>
 
 <main>
 <!-- ================= HOME ================= -->

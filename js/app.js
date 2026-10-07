@@ -347,6 +347,84 @@ spiralShow(null);
 /* ---------- library ---------- */
 $("#library").innerHTML=D.map(d=>`<details class="shelf" style="--c:${qc(d)}"><summary><span class="gr">${d.greek}</span><b>${esc(d.name)}</b><small></small></summary>${readList(d.id)}<p><a class="back" href="#/world-view/${d.id}">Open ${esc(d.short)} in the World View →</a></p></details>`).join("");
 
+/* ---------- search ---------- */
+/* A client-side index over the data and the page headings. Matching ignores case, accents and breathings ("αρετη" finds "ἀρετή"). Every word typed must match; matches in titles and at word starts rank first. */
+const norm=t=>plain(t).normalize("NFD").replace(/\p{M}/gu,"").toLowerCase().replace(/ς/g,"σ");
+const IDX=[];
+const add=(k,t,ctx,x,open,rank)=>IDX.push({k,t:plain(t),ctx:plain(ctx),nt:norm(t),nx:norm(x||""),open,rank});
+/* Navigate, then bring the target into view. The router's own hashchange listener was added first, so the page has rendered by the time show runs. */
+function jump(hash,target){
+  const show=()=>{const el=target&&target();if(el)el.scrollIntoView({block:"start",behavior:"auto"});};
+  if(location.hash!==hash){addEventListener("hashchange",show,{once:true});location.hash=hash;}else show();
+}
+const toPanel=(d,sub)=>()=>jump("#/world-view/"+d+(sub?"/"+sub:""),()=>$("#crumbs"));
+const toReading=d=>()=>jump("#/world-view/"+d,()=>$("#panel .reading")||$("#crumbs"));
+const toStage=i=>()=>jump("#/curriculum",()=>$("#stage-"+i));
+D.forEach(d=>{
+  add("Domain",d.name,Q[d.branch].en,[d.short,d.greek,d.desc,d.aristotle,d.frontier,Q[d.branch].gr].join(" "),toPanel(d.id),0);
+  d.subs.forEach(sb=>{
+    add("Part",sb.name,d.name,sb.desc,toPanel(d.id,sb.id),1);
+    sb.topics.forEach(t=>add("Topic",t,plain(sb.name)+" · "+d.short,"",toPanel(d.id,sb.id),4));
+  });
+  (READ[d.id]||[]).forEach(b=>add("Book",b.title,[b.author,d.short+" reading"].filter(Boolean).join(" · "),[b.author,b.note].join(" "),toReading(d.id),5));
+});
+STAGES.forEach((st,i)=>{
+  add("Stage",`Stage ${st.numeral} · ${st.name}`,st.span,[st.greek,st.aim,st.what,st.how,st.proof,st.domains.map(id=>DM[id].name).join(" ")].join(" "),toStage(i),2);
+  st.reading.forEach(b=>add("Book",b.title,[b.author,"Stage "+st.numeral+" reading"].filter(Boolean).join(" · "),b.author,toStage(i),5));
+});
+const PAGE_NAMES={home:"Home",story:"The Story",curriculum:"Curriculum"};
+document.querySelectorAll(".page").forEach(pg=>{
+  const name=pg.id.slice(2);if(!PAGE_NAMES[name])return;
+  pg.querySelectorAll("h2").forEach(h=>{const sec=h.closest("section")||h;add("Section",h.textContent,PAGE_NAMES[name],(sec.querySelector(".eyebrow")||{}).textContent,()=>jump("#/"+(name==="home"?"":name),()=>sec),3);});
+});
+document.querySelectorAll(".heir").forEach(el=>add("Room",el.querySelector("h3").textContent,"The Story · "+el.querySelector(".yr").textContent,el.querySelector("p").textContent,()=>jump("#/story",()=>el),3));
+
+function find(q){
+  const words=norm(q).split(/\s+/).filter(Boolean);if(!words.length)return[];
+  const out=[];
+  for(const e of IDX){
+    let sc=0,ok=true;
+    for(const w of words){
+      const ws=new RegExp("(^|[^\\p{L}\\p{N}])"+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"u");
+      if(ws.test(e.nt))sc+=e.nt.startsWith(w)?12:9;else if(e.nt.includes(w))sc+=5;else if(ws.test(e.nx))sc+=2;else if(e.nx.includes(w))sc+=1;else{ok=false;break;}
+    }
+    if(!ok)continue;
+    if(e.nt===words.join(" "))sc+=20;
+    out.push({e,sc});
+  }
+  return out.sort((a,b)=>b.sc-a.sc||a.e.rank-b.e.rank||a.e.t.length-b.e.t.length).slice(0,40).map(r=>r.e);
+}
+
+const dlg=$("#search"),qi=$("#search-q"),list=$("#search-list"),sst=$("#search-st");
+let hits=[],act=-1;
+function setAct(i){
+  act=i;list.querySelectorAll("[role=option]").forEach((li,j)=>li.setAttribute("aria-selected",j===i?"true":"false"));
+  if(i>=0){qi.setAttribute("aria-activedescendant","sr-"+i);list.children[i].scrollIntoView({block:"nearest"});}else qi.removeAttribute("aria-activedescendant");
+}
+function showHits(){
+  const q=qi.value.trim();hits=find(q);
+  list.innerHTML=hits.map((e,i)=>`<li role="option" id="sr-${i}" aria-selected="false"><span class="k">${e.k}</span><b>${escT(e.t)}</b><small>${escT(e.ctx)}</small></li>`).join("");
+  qi.setAttribute("aria-expanded",hits.length?"true":"false");
+  sst.textContent=!q?`Search ${IDX.length} entries.`:hits.length?`${hits.length}${hits.length===40?"+":""} result${hits.length===1?"":"s"}`:"Nothing found. Try fewer or shorter words.";
+  setAct(hits.length?0:-1);
+}
+function openSearch(){if(dlg.open)return;dlg.showModal();qi.select();showHits();}
+function choose(i){const e=hits[i];if(!e)return;dlg.close();e.open();}
+qi.addEventListener("input",showHits);
+qi.addEventListener("keydown",e=>{
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(hits.length)setAct((act+(e.key==="ArrowDown"?1:-1)+hits.length)%hits.length);}
+  else if(e.key==="Enter"){e.preventDefault();choose(act);}
+});
+list.addEventListener("click",e=>{const li=e.target.closest("[role=option]");if(li)choose(+li.id.slice(3));});
+if(HOVER)list.addEventListener("mousemove",e=>{const li=e.target.closest("[role=option]");if(li&&+li.id.slice(3)!==act)setAct(+li.id.slice(3));});
+dlg.addEventListener("click",e=>{if(e.target===dlg||e.target.closest("[data-search-close]"))dlg.close();});
+document.addEventListener("click",e=>{if(e.target.closest("[data-search]"))openSearch();});
+document.addEventListener("keydown",e=>{
+  if(e.key!=="/"||e.metaKey||e.ctrlKey||e.altKey||dlg.open)return;
+  const t=e.target;if(t.closest&&t.closest("input,textarea,select,[contenteditable]"))return;
+  e.preventDefault();openSearch();
+});
+
 /* ---------- boot ---------- */
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(curPage==="world-view")renderMap();},60);}).observe(wrap);
 route();
