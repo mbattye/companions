@@ -13,6 +13,7 @@ Live at **https://companions.mbattye.workers.dev**. Source at **https://github.c
 - **The Story**: how the Companions learnt at Mieza, and the rooms that inherited the method, from the Lyceum to the AI lab.
 - **Curriculum**: methods, seven stages (Α–Ζ) from wonder to wisdom, the spiral of return, how the time is spent, rules for using the machine, and a library.
 - **Start here**: what to do on Monday. Twelve weeks of Stage Α for a child, alongside school or at home, and a month for an adult. Printable.
+- **Mentor’s guide**: for whoever teaches: running the days and weeks, the symposium, the field day, the AI tutor, the mentor hour, and what to watch for at each stage. Printable.
 - **Glossary**: the Greek words the site uses, each with a source you can check.
 
 ## Run it
