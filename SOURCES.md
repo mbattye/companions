@@ -103,7 +103,7 @@ Aristotle is cited by book, chapter and Bekker number. Plutarch’s *Life of Ale
 
 ## Glossary
 
-Each term in `js/data/glossary.js` carries its own citation (work, book or section, and Bekker or standard reference), shown on the Glossary page. Added 7 October 2026. Five rest on claims already checked above (*aretē*, *hetairoi*, *peripatos*, *historia*, *scholē*). The other Bekker ranges were written without the texts open, so they are **?** until checked against an edition or the Perseus texts; do this at the first annual review (`STEWARDS.md`).
+Each term in `js/data/glossary.js` carries its own citation (work, book or section, and Bekker or standard reference), shown on the Glossary page. Added and checked 7 October 2026. Five rest on claims already checked above (*aretē*, *hetairoi*, *peripatos*, *historia*, *scholē*). Every Aristotle reference was read against the Greek in the Perseus Digital Library TEI texts, which carry Bekker line numbers: *Nicomachean Ethics* (Bywater, OCT 1894), *Metaphysics* (Ross, 1924) and *Politics* (Ross, OCT 1957). *Topics* I.1, 100b21–23 is not in Perseus and was checked against secondary citations of the passage. Notes were tightened where a paraphrase went beyond the Greek: *scholē* (“the first principle of everything”, *Politics* 1337b32), *phronēsis* (a state, ἕξις, not a capacity), *mousikē* (music serves all three ends, 1339b13–15).
 
 ## Our own prescriptions
 

@@ -36,7 +36,7 @@ C.glossary = [
     "term": "eudaimonia",
     "greek": "εὐδαιμονία",
     "meaning": "Flourishing; happiness",
-    "note": "Not a feeling but a life: the activity of the soul in accordance with excellence, over a complete life. The end that every other good serves.",
+    "note": "Not a mood but an activity: the soul at work in accordance with excellence, over a complete life. The end that every other good serves.",
     "cite": "<em>Nicomachean Ethics</em> I.7, 1097b1–1098a20"
   },
   {
@@ -60,8 +60,8 @@ C.glossary = [
     "term": "mousikē",
     "greek": "μουσική",
     "meaning": "The art of the Muses: music, with poetry and dance",
-    "note": "One of the four customary subjects Aristotle names for the young, with letters, gymnastics and drawing. He asks whether it serves play, character or leisure, and answers all three.",
-    "cite": "<em>Politics</em> VIII.3, 1337b23–27; VIII.5"
+    "note": "One of the four customary subjects Aristotle names for the young, with letters, gymnastics and drawing. He asks whether it serves play, character or cultivated leisure, and concludes that it serves all three.",
+    "cite": "<em>Politics</em> VIII.3, 1337b23–27; VIII.5, 1339a11–b15"
   },
   {
     "id": "oikonomia",
@@ -92,7 +92,7 @@ C.glossary = [
     "term": "phronēsis",
     "greek": "φρόνησις",
     "meaning": "Practical wisdom",
-    "note": "A true, reasoned capacity to act well about what is good for human beings. It needs experience of particulars, which is why the young can be good mathematicians but not yet practically wise.",
+    "note": "A true and reasoned state that issues in action about what is good and bad for human beings. It needs experience of particulars, which is why the young can be good mathematicians but not yet practically wise.",
     "cite": "<em>Nicomachean Ethics</em> VI.5, 1140a24–b30; VI.8, 1142a11–20"
   },
   {
@@ -116,7 +116,7 @@ C.glossary = [
     "term": "scholē",
     "greek": "σχολή",
     "meaning": "Leisure",
-    "note": "Time free from necessity, to be used well. Aristotle calls it the first principle of all action; through Latin <em>schola</em> it gave us “school”.",
+    "note": "Time free from necessity, to be used well. Aristotle says that being able to use it well is the first principle of everything; through Latin <em>schola</em> it gave us “school”.",
     "cite": "<em>Politics</em> VIII.3, 1337b28–1338a13; <em>Nicomachean Ethics</em> X.7, 1177b4–6"
   },
   {
