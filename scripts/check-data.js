@@ -7,7 +7,7 @@ const path = require("path");
 const vm = require("vm");
 
 const root = path.join(__dirname, "..");
-const files = ["domains", "curriculum", "reading", "resources", "prompts"];
+const files = ["domains", "curriculum", "reading", "resources", "prompts", "glossary"];
 const ctx = { window: {} };
 vm.createContext(ctx);
 for (const f of files) {
@@ -110,6 +110,18 @@ for (const [k, slots] of Object.entries(SLOTS)) {
 const rules = ((C.prompts || {}).base || []).filter(l => /^\d\. /.test(l)).length;
 if (rules !== 7) err(`C.prompts.base: ${rules} numbered rules (expected the seven in Curriculum VI)`);
 
+/* ---------- glossary ---------- */
+const gIds = new Set();
+(C.glossary || []).forEach((g, i) => {
+  const at = `C.glossary[${i}]${g.id ? " (" + g.id + ")" : ""}`;
+  if (!/^[a-z]+$/.test(g.id || "")) err(`${at}: id must be lowercase letters`);
+  if (gIds.has(g.id)) err(`${at}: duplicate id`); gIds.add(g.id);
+  for (const k of ["term", "greek", "meaning", "note", "cite"]) if (!g[k]) err(`${at}: missing ${k}`);
+  if (g.greek && !/^[\u0370-\u03FF\u1F00-\u1FFF ]+$/.test(g.greek)) err(`${at}: greek must be Greek letters only`);
+  if (g.term && g.term.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase() !== g.id) warn(`${at}: id is not the term without diacritics`);
+  if (g.cite && !/\d/.test(g.cite) && !/preface/i.test(g.cite)) err(`${at}: cite needs a book, section or line reference`);
+});
+
 /* ---------- strings: markup and typography ---------- */
 const walk = (v, where) => {
   if (typeof v === "string") {
@@ -121,10 +133,10 @@ const walk = (v, where) => {
   } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${where}[${i}]`));
   else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) if (!["url", "c"].includes(k)) walk(x, `${where}.${k}`);
 };
-for (const k of ["branches", "domains", "links", "stages", "mixCategories", "spectrum", "reading", "resources", "prompts"]) walk(C[k], "C." + k);
+for (const k of ["branches", "domains", "links", "stages", "mixCategories", "spectrum", "reading", "resources", "prompts", "glossary"]) walk(C[k], "C." + k);
 
 /* ---------- report ---------- */
 warnings.forEach(w => console.log("warn  " + w));
 errors.forEach(e => console.log("ERROR " + e));
-console.log(`${C.domains.length} domains, ${subIds.size} sub-areas, ${C.links.length} links, ${C.stages.length} stages · ${errors.length} error(s), ${warnings.length} warning(s)`);
+console.log(`${C.domains.length} domains, ${subIds.size} sub-areas, ${C.links.length} links, ${C.stages.length} stages, ${(C.glossary || []).length} terms · ${errors.length} error(s), ${warnings.length} warning(s)`);
 process.exit(errors.length ? 1 : 0);
