@@ -7,7 +7,7 @@ const path = require("path");
 const vm = require("vm");
 
 const root = path.join(__dirname, "..");
-const files = ["domains", "curriculum", "reading", "resources", "prompts", "glossary"];
+const files = ["domains", "curriculum", "reading", "resources", "prompts", "glossary", "starter"];
 const ctx = { window: {} };
 vm.createContext(ctx);
 for (const f of files) {
@@ -122,6 +122,22 @@ const gIds = new Set();
   if (g.cite && !/\d/.test(g.cite) && !/preface/i.test(g.cite)) err(`${at}: cite needs a book, section or line reference`);
 });
 
+/* ---------- starter path ---------- */
+for (const [k, n] of [["child", 12], ["adult", 4]]) {
+  const P = (C.starter || {})[k], at = `C.starter.${k}`;
+  if (!P) { err(`${at}: missing`); continue; }
+  for (const f of ["title", "who", "kit"]) if (!P[f]) err(`${at}: missing ${f}`);
+  if (!(P.tracks || []).length) err(`${at}: no tracks`);
+  (P.tracks || []).forEach((t, i) => (t.rhythm || []).forEach((row, j) => { if (!Array.isArray(row) || row.length !== 2 || !row[0] || !row[1]) err(`${at}.tracks[${i}].rhythm[${j}]: must be [when, what]`); }));
+  if ((P.weeks || []).length !== n) err(`${at}: ${(P.weeks || []).length} weeks (expected ${n})`);
+  let last = 0;
+  (P.weeks || []).forEach((w, i) => {
+    for (const f of ["title", "sub", "read", "make", "field", "ask"]) if (!w[f]) err(`${at}.weeks[${i}]: missing ${f}`);
+    if (w.sub && !subIds.has(w.sub)) err(`${at}.weeks[${i}]: sub "${w.sub}" is not a sub id`);
+    if (!(w.cabinet >= last)) err(`${at}.weeks[${i}]: cabinet count must not fall`); last = w.cabinet;
+  });
+}
+
 /* ---------- strings: markup and typography ---------- */
 const walk = (v, where) => {
   if (typeof v === "string") {
@@ -133,7 +149,7 @@ const walk = (v, where) => {
   } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${where}[${i}]`));
   else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) if (!["url", "c"].includes(k)) walk(x, `${where}.${k}`);
 };
-for (const k of ["branches", "domains", "links", "stages", "mixCategories", "spectrum", "reading", "resources", "prompts", "glossary"]) walk(C[k], "C." + k);
+for (const k of ["branches", "domains", "links", "stages", "mixCategories", "spectrum", "reading", "resources", "prompts", "glossary", "starter"]) walk(C[k], "C." + k);
 
 /* ---------- report ---------- */
 warnings.forEach(w => console.log("warn  " + w));
