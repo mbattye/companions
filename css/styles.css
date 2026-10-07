@@ -477,6 +477,10 @@ a.gl:hover{color:var(--aegean);text-decoration-color:currentColor}
 .wk-sub a{color:var(--ink-2)}
 @media (max-width:640px){.week{grid-template-columns:1fr}.wk-n{flex-direction:row;align-items:baseline;gap:10px}.wk-n small{margin:0 0 0 auto}.wk{grid-template-columns:1fr}.track .ledger div{grid-template-columns:1fr;gap:2px}}
 @media print{
+  #p-mentor section{padding-block:10pt}
+  #p-mentor .sec-head{margin-bottom:8pt}
+  h2,h3,.sec-head{break-after:avoid}
+  .rules li,.prose p,.ledger div{break-inside:avoid}
   .nav,footer,.search,.toc,.plan-acts,.wk-acts,.start-link,.tutor-acts{display:none!important}
   body{font-size:11pt}
   .page.on{animation:none}
@@ -488,3 +492,10 @@ a.gl:hover{color:var(--aegean);text-decoration-color:currentColor}
   .track{break-inside:avoid}
   a{text-decoration:none}
 }
+
+/* ---------- Mentor's guide ---------- */
+.mentor-acts{margin:28px 0 0}
+.watch div{grid-template-columns:11em 1fr}
+.watch dt{font-size:.72rem;color:var(--ink-2)}
+.watch dt .gr{font-size:1.1rem;color:var(--bronze);margin-right:6px;letter-spacing:0}
+@media (max-width:640px){.watch div{grid-template-columns:1fr;gap:2px}}

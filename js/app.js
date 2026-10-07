@@ -95,7 +95,7 @@ document.addEventListener("click",async e=>{
 })();
 
 /* ---------- router ---------- */
-const PAGES=["home","world-view","curriculum","story","glossary","start"];
+const PAGES=["home","world-view","curriculum","story","glossary","start","mentor"];
 let curPage=null;
 const S0={focus:null,sel:null};
 let st={...S0};
@@ -112,11 +112,11 @@ function route(){
   if(r.page!==curPage){window.scrollTo(0,0);curPage=r.page;}
   if(r.page==="world-view"){st={focus:r.focus,sel:r.sel};renderMap();renderPanel();renderCrumbs();}
   if(r.page==="glossary")showTerm(r.term);
-  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions","start":"Start here · Companions"})[r.page];
+  document.title=r.page==="home"?"Companions":({"world-view":"World View · Companions","curriculum":"Curriculum · Companions","story":"The Story · Companions","glossary":"Glossary · Companions","start":"Start here · Companions","mentor":"The mentor’s guide · Companions"})[r.page];
 }
 window.addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
-  const a=e.target.closest('a[href^="#c-"],a[href^="#s-"],a[href^="#start-"]');
+  const a=e.target.closest('a[href^="#c-"],a[href^="#s-"],a[href^="#start-"],a[href^="#m-"]');
   if(a){e.preventDefault();const t=document.querySelector(a.getAttribute("href"));if(t)t.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});}
 });
 
@@ -347,6 +347,9 @@ spiral.addEventListener("focusin",e=>{const t=sTarget(e);if(t)spiralShow(t);});
 spiral.addEventListener("focusout",()=>spiralShow(sPin));
 spiralShow(null);
 
+/* ---------- mentor's guide: what to watch for ---------- */
+$("#watch").innerHTML=STAGES.map(s=>`<div><dt><span class="gr" lang="grc">${s.numeral}</span> ${s.name}</dt><dd>${s.watch}</dd></div>`).join("");
+
 /* ---------- library ---------- */
 $("#library").innerHTML=D.map(d=>`<details class="shelf" style="--c:${qc(d)}"><summary><span class="gr" lang="grc">${d.greek}</span><b>${esc(d.name)}</b><small></small></summary>${readList(d.id)}<p><a class="back" href="#/world-view/${d.id}">Open ${esc(d.short)} in the World View →</a></p></details>`).join("");
 
@@ -375,7 +378,7 @@ STAGES.forEach((st,i)=>{
   add("Stage",`Stage ${st.numeral} · ${st.name}`,st.span,[st.greek,st.aim,st.what,st.how,st.proof,st.domains.map(id=>DM[id].name).join(" ")].join(" "),toStage(i),2);
   st.reading.forEach(b=>add("Book",b.title,[b.author,"Stage "+st.numeral+" reading"].filter(Boolean).join(" · "),b.author,toStage(i),5));
 });
-const PAGE_NAMES={home:"Home",story:"The Story",curriculum:"Curriculum",start:"Start here"};
+const PAGE_NAMES={home:"Home",story:"The Story",curriculum:"Curriculum",start:"Start here",mentor:"The mentor’s guide"};
 document.querySelectorAll(".page").forEach(pg=>{
   const name=pg.id.slice(2);if(!PAGE_NAMES[name])return;
   pg.querySelectorAll("h2").forEach(h=>{const sec=h.closest("section")||h;add("Section",h.textContent,PAGE_NAMES[name],(sec.querySelector(".eyebrow")||{}).textContent,()=>jump("#/"+(name==="home"?"":name),()=>sec),3);});
@@ -448,8 +451,9 @@ $("#starter").innerHTML=[["child","Α","Child · twelve weeks"],["adult","Α","A
     <div class="tutor wk-acts"><div class="tutor-acts"><span class="wk-sub">In the World View: ${subLink(w.sub)}</span><button class="btn ghost" type="button" data-copy="sub:${w.sub}">Copy tutor prompt</button><span class="tutor-st" role="status" aria-live="polite"></span></div></div></div>
   </li>`).join("")}</ol>
 </div></section>`;}).join("");
-/* Print one plan: mark which, print, then clear. */
+/* Print one plan (mark which, print, then clear) or the whole page. */
 document.addEventListener("click",e=>{
+  if(e.target.closest("[data-print-page]")){window.print();return;}
   const b=e.target.closest("[data-print-plan]");if(!b)return;
   document.body.dataset.print=b.dataset.printPlan;
   addEventListener("afterprint",()=>{delete document.body.dataset.print;},{once:true});
@@ -477,7 +481,7 @@ function linkTerms(root){
     em.replaceWith(a);a.appendChild(em);
   });
 }
-["#p-home","#p-story","#p-curriculum","#p-start","#p-world-view .phead"].forEach(sel=>linkTerms($(sel)));
+["#p-home","#p-story","#p-curriculum","#p-start","#p-mentor","#p-world-view .phead"].forEach(sel=>linkTerms($(sel)));
 GLOSS.forEach(g=>add("Term",g.term+" · "+g.greek,g.meaning,[g.greek,g.meaning,g.note].join(" "),()=>jump("#/glossary/"+g.id,()=>$("#g-"+g.id)),1));
 /* ---------- boot ---------- */
 let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>{if(curPage==="world-view")renderMap();},60);}).observe(wrap);
