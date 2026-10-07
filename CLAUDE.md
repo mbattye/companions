@@ -38,7 +38,7 @@ js/data/curriculum.js C.stages, C.mixCategories, C.spiral, C.spectrum
 js/data/reading.js    C.reading  (per domain, tiers Begin | Classic | Deeper)
 js/data/resources.js  C.resources (per sub-area off-ramps)
 js/data/prompts.js    C.prompts (tutor prompt: base rules, stage and sub-area templates)
-js/app.js             router, SVG mind map, panels, curriculum renderers
+js/app.js             router, SVG mind map, panels, curriculum renderers, tutor prompts, search
 manifest.webmanifest  web app name, colours, icons
 sw.js                 service worker (offline cache)
 assets/icons/         icon.svg (master), PNG sizes, favicon.svg

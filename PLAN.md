@@ -69,7 +69,7 @@ The site describes a curriculum; these make it something a learner and a mentor 
   Data in `js/data/prompts.js` (`C.prompts`), with a "Copy tutor prompt" button in each stage card and sub-area panel. Also exportable as a single printable text file.
   **Done when:** every stage and sub-area offers a prompt; it works offline; copying works on iPhone.
 
-- [ ] **L2. Search.**
+- [x] **L2. Search.**
   Client-side index over domains, sub-areas, topics, reading lists, stages and (later) the glossary. Opens with `/` and from the nav; results route to the right page and panel.
   **Done when:** instant results offline; usable at 360px; keyboard and screen-reader friendly.
 
@@ -214,4 +214,5 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-10-06** O2 closed: `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` confirmed fine to publish.
 - **2026-10-06** O4 done: `mbattye/companions` made public with Mike’s go-ahead; description and homepage set. GitHub’s licence badge shows MIT (it reads `LICENSE` only); the README explains the split.
 - **2026-10-07** L1: tutor prompts are templates in `C.prompts`, filled from the data, so a family editing the data gets matching prompts for free. Each copied prompt stands alone (base rules plus context). The tutor’s first move is to ask the learner’s name, age and what they know, so one prompt serves child and adult. Every prompt can be read on the page before copying. The printable export is a client-side `.txt` download from Curriculum VI: the base once, then each stage and sub-area. Copy falls back to a hidden textarea where the Clipboard API is unavailable (`file://`).
+- **2026-10-07** L2: search is a modal `<dialog>` opened from a nav icon or `/`. The index is built in the browser at load from the data plus the page headings and the fourteen rooms, about 720 entries, so it needs no build step and works offline. Matching ignores case, accents and breathings; every word must match; titles and word starts rank first; 40 results at most. To fit the icon on phones the nav spacing tightens below 480px and the wordmark hides below 375px (the column mark stays). The glossary joins the index with L3.
 - **2026-10-07** O5 (part): no mirror for now; the yearly archive is a bundle plus a ZIP (the ZIP so a non-developer can restore without git), kept in a git-ignored `archive/` folder and moved to family storage by hand. O6: `STEWARDS.md` names Mike as steward, successor to be named. O7: checklist written; first review pending R6.
