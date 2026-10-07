@@ -42,14 +42,16 @@ So the work can outlive any one account, and so family or anyone else can legall
 - [ ] **O5. Mirrors and an annual archive.**
   A second remote on a different host (Codeberg or GitLab), pushed alongside GitHub. Once a year: `git bundle create companions-YYYY.bundle --all`, plus a printed/PDF snapshot when one exists (see V5), saved to family storage.
   **Done when:** second remote exists; the first bundle is saved; the steps are written in the README.
+  *Progress 2026-10-07:* first bundle and ZIP made in `archive/` (git-ignored, kept locally for now); steps in the README and `STEWARDS.md`. Mirror skipped for now; the README says how to add one.
 
-- [ ] **O6. Steward and restore note.**
+- [x] **O6. Steward and restore note.**
   A short section (README or `STEWARDS.md`): who looks after Companions, and how to restore it from a bundle if GitHub and Cloudflare are both gone (clone, open `index.html`, redeploy anywhere static).
   **Done when:** a non-developer family member could follow it.
 
 - [ ] **O7. Annual review ritual.**
   Once a year: run the link checker (R6), re-verify a slice of `SOURCES.md` and add "last verified" dates, tag a snapshot (`git tag year-YYYY`), make the bundle (O5).
   **Done when:** the checklist is written down and the first review is done.
+  *Progress 2026-10-07:* checklist written in `STEWARDS.md`. The first full review waits for the link checker (R6); the `year-2026` tag is made at that review.
 
 - [ ] **O8. Domain (later).** Mike will choose one. Register for the longest term available; record the registrar and renewal date in the steward note.
 
@@ -211,3 +213,4 @@ A new domain needs branch, Greek, description, an "In Aristotle" line, frontier,
 - **2026-10-02** Footer carries a one-line licence note. O3: README rewritten for strangers and family (what it is, run, files, hosting, own copy, licences). GitHub forking only works once O4 makes the repo public; until then the clone and ZIP routes need access.
 - **2026-10-06** O2 closed: `CLAUDE.md`, `ROADMAP.md`, `PLAN.md` and `SOURCES.md` confirmed fine to publish.
 - **2026-10-06** O4 done: `mbattye/companions` made public with Mike’s go-ahead; description and homepage set. GitHub’s licence badge shows MIT (it reads `LICENSE` only); the README explains the split.
+- **2026-10-07** O5 (part): no mirror for now; the yearly archive is a bundle plus a ZIP (the ZIP so a non-developer can restore without git), kept in a git-ignored `archive/` folder and moved to family storage by hand. O6: `STEWARDS.md` names Mike as steward, successor to be named. O7: checklist written; first review pending R6.
