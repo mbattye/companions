@@ -19,6 +19,58 @@ const domLinked=id=>{const s=new Set();Object.keys(PAIRS).forEach(k=>{const[a,b]
 const qc=d=>Q[d.branch].c;
 const HOVER=matchMedia("(hover: hover)").matches;
 
+/* ---------- tutor prompts ---------- */
+/* Built from the templates in prompts.js and the data they describe. Each copied prompt stands alone: the base rules, then the context. */
+const P=window.C.prompts;
+const plain=v=>strip(String(v==null?"":v)).trim();
+/* Placeholder values may be several "- " lines; a full stop after a value that already ends in one is dropped. */
+const fill=(lines,v)=>lines.join("\n").replace(/\{(\w+)\}/g,(_,k)=>plain(v[k])).replace(/([.?!])\./g,"$1").trim();
+const BASE=P.base.join("\n");
+const books=r=>r.map(b=>"- "+plain(b.title)+(b.author?", "+plain(b.author):"")+(b.tier?` (${b.tier})`:"")).join("\n");
+function stageCtx(i){
+  const s=STAGES[i];
+  return fill(P.stage,{...s,domains:s.domains.map(id=>DM[id].name).join(", "),reading:books(s.reading)});
+}
+function subCtx(id){
+  const s=SUB[id],d=DM[s.dom],ls=LINKS[id]||[];
+  return fill(P.sub,{name:s.name,desc:s.desc,domain:d.name,branch:Q[d.branch].en,topics:s.topics.join(", "),aristotle:d.aristotle,frontier:d.frontier,
+    links:ls.length?ls.map(l=>`- ${plain(SUB[l.to].name)} (${DM[SUB[l.to].dom].short}): ${plain(l.w)}`).join("\n"):"- None mapped yet.",
+    reading:(READ[d.id]||[]).length?books(READ[d.id]):"- None listed yet."});
+}
+function promptFor(key){
+  const[k,id]=key.split(":");
+  return k==="stage"?BASE+"\n\n"+stageCtx(+id):k==="sub"?BASE+"\n\n"+subCtx(id):BASE;
+}
+const escT=t=>t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const tutorBlock=(key,label,cls)=>`<div class="tutor${cls?" "+cls:""}"><dt>Tutor prompt</dt><dd><p>Paste into any AI model to start a session ${label} under the seven rules for the machine.</p><div class="tutor-acts"><button class="btn ghost" type="button" data-copy="${key}">Copy tutor prompt</button><span class="tutor-st" role="status" aria-live="polite"></span></div><details><summary>Read the prompt</summary><pre>${escT(promptFor(key))}</pre></details></dd></div>`;
+/* Clipboard API where allowed (https, localhost); otherwise a hidden textarea, which also covers file:// and older iOS. */
+async function copyText(t){
+  try{await navigator.clipboard.writeText(t);return true;}catch(e){}
+  const ta=document.createElement("textarea");ta.value=t;ta.setAttribute("readonly","");ta.style.cssText="position:fixed;top:0;left:0;opacity:0;font-size:16px";
+  document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,t.length);
+  let ok=false;try{ok=document.execCommand("copy");}catch(e){}
+  ta.remove();return ok;
+}
+function allPrompts(){
+  const rule="\n\n"+"=".repeat(64)+"\n\n";
+  const head="COMPANIONS · TUTOR PROMPTS\n\nTo start a session, paste the base prompt into any AI model, followed by one stage or one part of the map. Each part is written to follow the base prompt.\nThe prompts are generated from the site’s data. Text CC BY-SA 4.0.";
+  return[head,"THE BASE PROMPT\n\n"+BASE,
+    ...STAGES.map((s,i)=>`STAGE ${s.numeral} · ${s.name.toUpperCase()}\n\n`+stageCtx(i)),
+    ...D.flatMap(d=>d.subs.map(s=>`${d.name.toUpperCase()} · ${plain(s.name)}\n\n`+subCtx(s.id)))].join(rule)+"\n";
+}
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-copy],[data-prompts]");if(!b)return;
+  if(b.dataset.prompts!==undefined){
+    const url=URL.createObjectURL(new Blob([allPrompts()],{type:"text/plain;charset=utf-8"}));
+    const a=document.createElement("a");a.href=url;a.download="companions-tutor-prompts.txt";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),4000);return;
+  }
+  const box=b.closest(".tutor"),stEl=box&&box.querySelector(".tutor-st");
+  const ok=await copyText(promptFor(b.dataset.copy));
+  if(stEl){stEl.textContent=ok?"Copied":"Could not copy. Select the text below instead.";clearTimeout(stEl.t);stEl.t=setTimeout(()=>{stEl.textContent="";},ok?2400:8000);}
+  if(!ok&&box){const dt=box.querySelector("details");if(dt)dt.open=true;}
+});
+
 /* ---------- temple ---------- */
 (function(){
   const t=$("#temple");let p="";
@@ -203,7 +255,7 @@ function renderPanel(){
   } else {
     const s=SUB[st.sel],d=DM[s.dom],ls=LINKS[s.id]||[];
     h=`<button class="back" type="button" data-open="${d.id}">← ${esc(d.name)}</button><h2>${s.name}</h2><p>${s.desc}</p>
-    <div><dt class="caps" style="color:var(--stone);display:block;margin-bottom:8px">Study</dt><div class="topics">${s.topics.map(t=>`<span>${t}</span>`).join("")}</div></div>
+    <div><dt class="caps" style="color:var(--stone);display:block;margin-bottom:8px">Study</dt><div class="topics">${s.topics.map(t=>`<span>${t}</span>`).join("")}</div></div>${tutorBlock("sub:"+s.id,"on "+plain(s.name))}
     <div><dt class="caps" style="color:var(--stone);display:block;margin-bottom:8px">Cross-pollinations</dt>${ls.length?`<ul class="xlinks">${ls.map(l=>{const t=SUB[l.to],td=DM[t.dom];return`<li><button type="button" style="--c:${qc(td)}" data-open="${td.id}" data-sel="${t.id}"><b>${t.name} <small>· ${esc(td.short)}</small></b><span>${l.w}</span></button></li>`;}).join("")}</ul>`:`<p class="muted">No mapped links yet.</p>`}</div>${offRamps(s)}`;
   }
   p.innerHTML=h;
@@ -246,6 +298,7 @@ $("#stages").innerHTML=STAGES.map((s,i)=>`<article class="stage" id="stage-${i}"
       <div><dt>How</dt><dd>${s.how}</dd></div>
       <div><dt>The machine’s role</dt><dd>${s.ai}</dd></div>
       <div class="proof"><dt>Proof of work</dt><dd>${s.proof}</dd></div>
+      ${tutorBlock("stage:"+i,"for Stage "+s.numeral,"full")}
       <div class="full"><dt>Reading for this stage</dt><dd><ul class="stage-read">${s.reading.map(b=>`<li><cite>${b.title}</cite>${b.author?` <span class="au">${b.author}</span>`:""}</li>`).join("")}</ul></dd></div>
       <div class="full"><dt>The week’s balance</dt><dd>${mixBox(s.mix)}</dd></div>
     </dl>

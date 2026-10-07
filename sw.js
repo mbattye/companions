@@ -5,7 +5,7 @@
  * Bump VERSION when files are added to or removed from PRECACHE.
  * The host redirects /index.html to /, so the page is cached as "./" only (a cached redirect cannot answer a navigation).
  */
-const VERSION = "companions-v2";
+const VERSION = "companions-v3";
 const FONTS = "companions-fonts";
 const PRECACHE = [
   "./",
@@ -15,6 +15,7 @@ const PRECACHE = [
   "js/data/curriculum.js",
   "js/data/reading.js",
   "js/data/resources.js",
+  "js/data/prompts.js",
   "manifest.webmanifest",
   "assets/icons/icon.svg",
   "assets/icons/favicon.svg",
