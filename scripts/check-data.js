@@ -57,6 +57,7 @@ for (const id of subIds.keys()) if (!C.links.some(l => l.a === id || l.b === id)
 const mixKeys = C.mixCategories.map(m => m.k);
 C.stages.forEach((s, i) => {
   for (const id of s.domains) if (!domIds.has(id)) err(`stage ${s.numeral}: unknown domain "${id}"`);
+  for (const f of ["name", "aim", "what", "how", "ai", "proof", "watch"]) if (!s[f]) err(`stage ${s.numeral}: missing ${f}`);
   const keys = Object.keys(s.mix);
   if (keys.length !== mixKeys.length || !mixKeys.every(k => k in s.mix)) err(`stage ${s.numeral}: mix keys ${keys} ≠ ${mixKeys}`);
   const sum = Object.values(s.mix).reduce((a, b) => a + b, 0);

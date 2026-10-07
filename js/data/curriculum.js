@@ -51,6 +51,7 @@ C.stages = [
     "how": "Questions before answers. A “why” notebook. Show-and-tell, play and free exploration. Aristotle: no lessons before five, then two years of watching before doing.",
     "ai": "An oracle that answers back with a question. It pitches answers to the child’s level and never makes the drawing or tells the story for them.",
     "proof": "A cabinet of curiosities: a hundred specimens collected, drawn, named and explained.",
+    "watch": "Curiosity, not output. It is working when questions come unprompted and the cabinet grows without being asked. Beware worksheets too early, screens doing the wondering, and adults who answer before the child has guessed.",
     "mix": {
       "study": 20,
       "make": 20,
@@ -97,6 +98,7 @@ C.stages = [
     "how": "Drill and proof together. Formal debate begins. Commonplace book kept daily. Peers teach the year below.",
     "ai": "A patient drill partner that sets problems at the edge of ability, asks “where exactly did it go wrong?” and grades explanations as well as answers.",
     "proof": "Prove twenty propositions of Euclid at a board, write and defend a 1,000-word argument, and ship a small program someone uses.",
+    "watch": "Fluency and honest error. It is working when the student can say exactly where a proof or program went wrong, and a hard problem is a pleasure. Beware answers without explanations, the tutor used as an answer key, and drill without proof or proof without drill.",
     "mix": {
       "study": 40,
       "make": 15,
@@ -143,6 +145,7 @@ C.stages = [
     "how": "Laboratory and field before textbook. Replicate the classics: Eratosthenes’ shadows, Galileo’s ramp, Mendel’s crosses. Keep a lab book.",
     "ai": "A lab assistant for designing experiments, analysing error and running simulations. It never supplies data the student did not measure.",
     "proof": "An original field study or experiment, written as a paper and presented to the cohort.",
+    "watch": "Measurement. It is working when the lab book is kept, errors are estimated and a result surprises them. Beware experiments that work first time, results tidied to match the textbook, and measurements never repeated.",
     "mix": {
       "study": 35,
       "make": 20,
@@ -190,6 +193,7 @@ C.stages = [
     "how": "Apprenticeship to a master. Projects with real users. Build, test, fail, fix. Design crits where work is judged in front of peers.",
     "ai": "A co-pilot for code and CAD, on one condition: the student can explain every line. It also acts as a hostile reviewer that hunts for failure modes.",
     "proof": "Ship a real thing that strangers use: a machine, an app, a building project or a performance.",
+    "watch": "Finishing. It is working when things ship, crits are taken without sulking and every line can be explained. Beware endless polishing, work the student cannot explain, and projects with no real user.",
     "mix": {
       "study": 20,
       "make": 45,
@@ -240,6 +244,7 @@ C.stages = [
     "how": "The Lyceum rhythm: morning lecture, afternoon walk, evening seminar. Primary texts, not summaries. Formal disputation.",
     "ai": "A sparring partner that takes the opposing side at full strength, and a research assistant that must cite every claim.",
     "proof": "A thesis defended in public disputation before companions and outsiders.",
+    "watch": "Argument. It is working when the student states the other side fairly, reads the source and changes their mind for reasons. Beware summaries in place of texts, cleverness without care for truth, and contempt for opponents.",
     "mix": {
       "study": 40,
       "make": 15,
@@ -287,6 +292,7 @@ C.stages = [
     "how": "Case studies, a real venture or public-service placement, one named owner for each outcome, a mentor and a decision journal.",
     "ai": "A simulator of stakeholders, markets and adversaries for war-gaming decisions, and an auditor of your decision journal.",
     "proof": "Found, run or rescue something real, then give a public account of it.",
+    "watch": "Judgement under responsibility. It is working when outcomes are owned, the decision journal is honest and help is asked for early. Beware blame, bad news hidden, and theory with no practice. Here the mentor stands further back.",
     "mix": {
       "study": 20,
       "make": 35,
@@ -338,6 +344,7 @@ C.stages = [
     "how": "Teach a younger cohort. Host the symposium. Write, travel, build and keep the notebook.",
     "ai": "An archivist of a lifetime’s notes, and a student to teach.",
     "proof": "Teach a cohort through Stage Α, and write your own World View.",
+    "watch": "Generosity and leisure well used. It is working when they teach, and still study for its own sake. Beware a learner who has stopped learning, and teaching as display.",
     "mix": {
       "study": 20,
       "make": 30,
