@@ -8,6 +8,7 @@ A small, static website (to become an installable iPhone/iPad app) that sets out
 - **Curriculum**: methods, criticism, the order, seven stages (Α–Ζ), spiral table, time, AI rules, library. Sections are numbered I–VII.
 - **Start here**: the starter path for Stage Α (a child’s twelve weeks in two tracks, an adult’s month), printable per plan.
 - **Mentor’s guide**: for whoever teaches: the job, day and week, symposium, field day, the machine, mentor hour, and what to watch for at each stage (`watch` in `C.stages`). Sections I–VII; printable.
+- **Commonplace book**: local-first notes per learner (IndexedDB database `companions`: stores `profiles`, `notes`, `meta`), tagged to a domain or sub-area, with Markdown export and import. The hand-kept notebook stays primary; this is for what is met on screen.
 - **Glossary**: Greek terms with meaning and citation; first uses in the copy link to it.
 
 Owner: Mike. Read `PLAN.md` for the current plan (work through it by item ID, log decisions there) and `ROADMAP.md` for the original workstreams.
@@ -20,7 +21,7 @@ No build step. Either open `index.html` directly, or serve the folder:
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`, `#/glossary`, `#/glossary/<term>`, `#/start`, `#/mentor`. In-page section links use `#s-` (Story), `#c-` (Curriculum), `#start-` (Start here) and `#m-` (Mentor’s guide) and are intercepted by the router.
+Routes are hash-based: `#/`, `#/story`, `#/world-view`, `#/world-view/<domain>`, `#/world-view/<domain>/<sub>`, `#/curriculum`, `#/glossary`, `#/glossary/<term>`, `#/start`, `#/mentor`, `#/notebook`, `#/notebook/<domain or sub>` (opens with that tag). In-page section links use `#s-` (Story), `#c-` (Curriculum), `#start-` (Start here) and `#m-` (Mentor’s guide) and are intercepted by the router.
 
 After any data edit, run `node scripts/check-data.js`.
 
@@ -77,6 +78,7 @@ Minimal, classical, precise. Beauty through proportion, type and restraint; smal
 - Type: Cormorant Garamond (display), Spectral (text), Marcellus SC (small caps labels), GFS Didot (Greek).
 - Tokens in `:root`: `--ground --ground-2 --ink --ink-2 --stone --rule --rule-2 --aegean --bronze` plus branch colours `--q-org --q-the --q-pra --q-poi`. Dark theme redefines the same tokens under `prefers-color-scheme` and `[data-theme="dark"]`. Never hard-code a colour outside the token blocks.
 - Hairline rules (1px), generous whitespace, left-aligned except the home hero.
+- Anything that stores a learner’s work is local-first: no accounts, no server, nothing sent anywhere, always exportable. Changing the IndexedDB schema needs a version bump and an upgrade path that keeps existing notes; the Markdown export format (a `<!-- companions-note {json} -->` marker before each note) must keep importing.
 - **Reserve palette (Greek pigments and pottery).** Not used by the site, which keeps its own tokens. Kept for future assets such as interactive learning pieces, where the pottery black and orange-red pair is the starting point: pottery black gloss `#141210`, black `#1C1714`, pottery orange-red `#C45D2B`, white `#F7F4EC`, yellow ochre `#D2B45A`, red ochre `#9E2F22`, cinnabar `#E34234`, Tyrian purple `#66023C`, Tyrian red-purple `#990024`. A full site-wide version of this palette (tokens for both themes, icons, manifest) is at the `palette-pigments` tag; it was tried and not adopted.
 - Must work at 360px wide (16px gutters, no horizontal scroll), on iPad in both orientations, and on desktop. Respect `prefers-reduced-motion`. Visible keyboard focus everywhere.
 
